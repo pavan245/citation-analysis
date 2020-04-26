@@ -16,4 +16,4 @@ eval.metrics.f1_score(y_true, y_pred, labels, average)
 **y_true** : 1-d array or list of gold class values  
 **y_pred** : 1-d array or list of estimated values returned by a classifier  
 **labels** : list of labels/classes  
-**average**: string - [None, 'micro', 'macro'] 
+**average**: string - [None, 'micro', 'macro'] If None, the scores for each class are returned.
