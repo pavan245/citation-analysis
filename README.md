@@ -2,7 +2,7 @@
 Project repo for Computational Linguistics Team Laboratory at the University of Stuttgart
 
 
-### Evaluation
+### **Evaluation**
 we plan to implement and use ***f1_score*** metric for evaluation of our classifier
 
 > F1 score is a weighted average of Precision and Recall(or Harmonic Mean between Precision and Recall).  
