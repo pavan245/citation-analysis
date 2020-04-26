@@ -5,7 +5,7 @@ Project repo for Computational Linguistics Team Laboratory at the University of 
 ### Evaluation
 we plan to implement and use ***f1_score*** metric for evaluation
 
-> F1 score is a weighted average of Precision and Recall(or Harmonic Mean between Precision and Recall)
+> F1 score is a weighted average of Precision and Recall(or Harmonic Mean between Precision and Recall).  
 > The formula for F1 Score is:
 > F1 = 2 * (precision * recall) / (precision + recall)
 
