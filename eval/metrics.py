@@ -2,6 +2,22 @@ import utils.constants as const
 
 
 def f1_score(y_true, y_pred, labels, average):
+    """
+    F1 score is a weighted average of Precision and Recall(or Harmonic Mean between Precision and Recall).
+    The formula for F1 Score is: F1 = 2 * (precision * recall) / (precision + recall)
+
+    :param y_true: list of Gold labels
+    :param y_pred: list of predicted labels
+    :param labels: Optional, list of labels for PR Values
+    :param average: String - (None|'MICRO'|'MACRO') : defined in utils.constants.py
+                If None, the scores for each class are returned.
+                MACRO - Macro Averaging : Compute F1 Score for each of the classes and average these numbers
+                MICRO - Micro Averaging : Compute TP, FP, FN for each of the classes and sum these numbers (aggregate-TP,FP,FN)
+                                                            and compute F1 Score for aggregate TP, FP & FN
+    :return: returns a list of  Result class objects. <eval.metrics.Result>
+                    Use :func:`~eval.metrics.Result.print_result` to print F1 Score on the Console
+    """
+
     if average is None or average == const.AVG_MACRO:
         pr_list = get_precision_recall(y_true, y_pred, labels)
         f1_score_list = []
@@ -34,7 +50,7 @@ def get_precision_recall(y_true, y_pred, labels=None):
 
     :param y_true: list of Gold labels
     :param y_pred: list of predicted labels
-    :param labels: Optional, list of labels for which
+    :param labels: Optional, list of labels for PR Values
     :return: returns the list of dictionaries with Precision and Recall values
                 [
                  {'label': 'method', 'precision': 0.71, 'recall': 0.71, 'tp': 5, 'fp': 2, 'fn': 2}
@@ -51,6 +67,7 @@ def get_precision_recall(y_true, y_pred, labels=None):
 
     pr_dict = {}
 
+    # use iterators for both y_true and y_pred
     gold_iter = iter(y_true)
     pred_iter = iter(y_pred)
 
@@ -97,18 +114,44 @@ def get_precision_recall(y_true, y_pred, labels=None):
 
 
 def get_precision(tp, fp):
+    """
+    Calculates and Returns Precision.
+
+    :param tp: Number of True Positives
+    :param fp: Number of False Positives
+    :return: Returns Precision value (usually floating point number)
+    """
     return tp / (tp + fp)
 
 
 def get_recall(tp, fn):
+    """
+    Calculates and Returns Recall
+
+    :param tp: Number of True Positives
+    :param fn: Number of False Positives
+    :return: Returns Recall Value ((usually floating point number))
+    """
     return tp / (tp + fn)
 
 
 def calculate_f1_score(precision, recall):
+    """
+    Takes Precision and Recall as params and computes F1 Score
+    The formula for F1 Score is: F1 = 2 * (precision * recall) / (precision + recall)
+
+    :param precision: Precision Value
+    :param recall: Recall Value
+    :return: Returns F1 Score
+
+    """
     return 2 * (precision * recall) / (precision + recall)
 
 
 class Result:
+    """
+    Model Class for carrying Evaluation Data (F1 Score, Precision, Recall, ....)
+    """
 
     def __init__(self, precision, recall, average, label, f_score):
         self.precision = precision
@@ -118,4 +161,5 @@ class Result:
         self.f1_score = f_score
 
     def print_result(self):
+        """ Prints F1 Score"""
         print('F1 Score :: ', self.f1_score, ' Label :: ', self.label)
