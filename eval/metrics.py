@@ -36,6 +36,7 @@ def f1_score(y_true, y_pred, labels, average):
             return [Result(None, None, average, None, f1_sum / len(pr_list))]
 
     elif average == const.AVG_MICRO:
+        print('test test test')
         pass
 
     return None
