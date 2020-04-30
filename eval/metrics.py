@@ -37,6 +37,7 @@ def f1_score(y_true, y_pred, labels, average):
 
     elif average == const.AVG_MICRO:
         print('test test test')
+        print("another test comment")
         pass
 
     return None
