@@ -17,7 +17,7 @@ def f1_score(y_true, y_pred, labels, average):
     :return: returns a list of  Result class objects. <eval.metrics.Result>
                     Use :func:`~eval.metrics.Result.print_result` to print F1 Score on the Console
     """
-
+    assert len(list(y_true))==len(list(y_pred))
     if average is None or average == const.AVG_MACRO:
         pr_list = get_precision_recall(y_true, y_pred, labels)
         f1_score_list = []
@@ -36,9 +36,7 @@ def f1_score(y_true, y_pred, labels, average):
             return [Result(None, None, average, None, f1_sum / len(pr_list))]
 
     elif average == const.AVG_MICRO:
-        print('test test test')
-        print("another test comment")
-        pass
+        return sum([a==b for a,b in zip(y_true, y_pred)])
 
     return None
 
