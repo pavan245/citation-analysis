@@ -18,8 +18,9 @@ def f1_score(y_true, y_pred, labels, average):
                     Use :func:`~eval.metrics.Result.print_result` to print F1 Score on the Console
     """
 
+    # pr_list - list of dictionaries with precision, recall, TPs, FPs and FNs for each label
+    pr_list = get_precision_recall(y_true, y_pred, labels)
     if average is None or average == const.AVG_MACRO:
-        pr_list = get_precision_recall(y_true, y_pred, labels)
         f1_score_list = []
         f1_sum = 0
         for item in pr_list:
@@ -28,17 +29,29 @@ def f1_score(y_true, y_pred, labels, average):
             f_score = calculate_f1_score(precision, recall)
             f1_sum += f_score
             if average is None:
-                f1_score_list.append(Result(precision, recall, average, item['label'], f_score))
+                f1_score_list.append(Result(precision, recall, average, item['label'], round(f_score, 3)))
 
         if average is None:
             return f1_score_list
         elif average == const.AVG_MACRO:
-            return [Result(None, None, average, None, f1_sum / len(pr_list))]
+            return [Result(None, None, average, None, round(f1_sum / len(pr_list), 3))]
 
     elif average == const.AVG_MICRO:
-        print('test test test')
-        print("another test comment")
-        pass
+        aggregate_tp = 0
+        aggregate_fp = 0
+        aggregate_fn = 0
+
+        for item in pr_list:
+            aggregate_tp += item['tp']
+            aggregate_fp += item['fp']
+            aggregate_fn += item['fn']
+
+        # find precision and recall for aggregate TP, FP & FN
+        agg_precision = get_precision(aggregate_tp, aggregate_fp)
+        agg_recall = get_recall(aggregate_tp, aggregate_fn)
+
+        agg_f1_score = calculate_f1_score(agg_precision, agg_recall)
+        return [Result(agg_precision, agg_recall, average, None, round(agg_f1_score, 3))]
 
     return None
 
@@ -63,7 +76,7 @@ def get_precision_recall(y_true, y_pred, labels=None):
         raise ValueError('Length of Gold standard labels and Predicted labels must be the same')
 
     all_labels = False
-    if labels is None or len(labels) is 0:
+    if labels is None or len(labels) == 0:
         # get the precision and recall for all the labels
         all_labels = True
 
@@ -164,4 +177,4 @@ class Result:
 
     def print_result(self):
         """ Prints F1 Score"""
-        print('F1 Score :: ', self.f1_score, ' Label :: ', self.label)
+        print('F1 Score :: ', self.f1_score, ' Label :: ', self.label, ' Average :: ', self.average)
