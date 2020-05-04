@@ -29,12 +29,12 @@ def f1_score(y_true, y_pred, labels, average):
             f_score = calculate_f1_score(precision, recall)
             f1_sum += f_score
             if average is None:
-                f1_score_list.append(Result(precision, recall, average, item['label'], round(f_score, 3)))
+                f1_score_list.append(Result(precision, recall, average, item['label'], round(f_score, 4)))
 
         if average is None:
             return f1_score_list
         elif average == const.AVG_MACRO:
-            return [Result(None, None, average, None, round(f1_sum / len(pr_list), 3))]
+            return [Result(None, None, average, None, round(f1_sum / len(pr_list), 4))]
 
     elif average == const.AVG_MICRO:
         aggregate_tp = 0
@@ -51,7 +51,7 @@ def f1_score(y_true, y_pred, labels, average):
         agg_recall = get_recall(aggregate_tp, aggregate_fn)
 
         agg_f1_score = calculate_f1_score(agg_precision, agg_recall)
-        return [Result(agg_precision, agg_recall, average, None, round(agg_f1_score, 3))]
+        return [Result(agg_precision, agg_recall, average, None, round(agg_f1_score, 4))]
 
     return None
 
