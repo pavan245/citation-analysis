@@ -1,3 +1,5 @@
+from feature_extraction.features import extract_features_from_text
+
 
 class DataInstance:
     """
@@ -8,6 +10,8 @@ class DataInstance:
         self.did = r_id
         self.text = text
         self.true_label = true_label
+        self.features = extract_features_from_text(text)
 
     def print(self):
-        print('True Label :: ', self.true_label, ' Text :: ', self.text)
+        print('\nTrue Label :: ', self.true_label, ' Text :: ', self.text)
+        print('Features :: ', self.features)
