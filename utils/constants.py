@@ -5,8 +5,23 @@ AVG_MICRO = 'MICRO'
 AVG_MACRO = 'MACRO'
 
 REGEX_CONSTANTS = {
-    'ACRONYM': re.compile(r"\s*\b[A-Z.]{2,}s?\b\s*"),
-    'CONTAINS_YEAR': re.compile('.*([1-2][0-9]{3})'),
-    'SEQUENCE': re.compile(r'\s+\((\d+,* *)*\)\s+'),
-    'REFERENCE': re.compile(r"\s*\[(\d+,* *)*\]\s*")
+
+    # Regex for matching Acronym Patterns -> COVID-19 / SEKA / SMY2 / EAP1 / SCP16 / ASC1 / DENV-2
+    'ACRONYM': re.compile(r"\s*\b[A-Z.]{2,}s?\b\s*"),  # TODO :: (for Isaac)
+
+    # Regex for matching Years in the text - > 1995 / 2020 / 2019
+    'CONTAINS_YEAR': re.compile('.*([1-2][0-9]{3})'),  # TODO :: (for Isaac)
+
+    # Regex for matching Number Sequences in the text -> (15) / (10, 11, 112, 113) / (1,7,8,10-14)
+    'SEQUENCE': re.compile(r'\s+\((\d+,* *)*\)\s+'),  # TODO :: (for Isaac)
+
+    # Regex for matching References in the text -> [4] / [ 10-17, 19, 20] / [123, 500]
+    'REFERENCE': re.compile(r"\s*\[(\d+,* *)*\]\s*"),  # TODO :: (for Isaac)
+
+    # Regex for matching percentages in the text -> 99% / 99.99% / 10 % / 23.98% / 10-20% / 25%-30%
+    'PERCENTAGE': re.compile(r"\d+(\.\d+)?%"),  # TODO :: (for Isaac)
+
+    # Regex for matching URLs -> http://www.phrap.org/, http://www. , http://carcfordjournals. ,
+    # https://www.ims.uni-stuttgart.de/
+    'URL': re.compile(r"https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+")  # TODO :: (for Isaac)
 }

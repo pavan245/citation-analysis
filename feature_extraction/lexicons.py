@@ -1,3 +1,6 @@
+"""
+Dictionary of Lexicons used for Feature Extraction
+"""
 ALL_LEXICONS = {
 
     'COMPARE': ['compar' 'compet', 'evaluat', 'test', 'superior', 'inferior', 'better', 'best', 'worse', 'worst',

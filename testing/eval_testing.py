@@ -28,6 +28,5 @@ train_file_path = project_root+'/data/tsv/train.tsv'
 print(train_file_path)
 
 data = read_csv_file(csv_file_path=train_file_path, delimiter='\t')
-for inst in data:
-    if len(inst.features) <= 0:
-        inst.print()
+for inst in data[:10]:
+    inst.print()
