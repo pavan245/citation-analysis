@@ -4,9 +4,10 @@ import re
 
 """ List of supported features for feature extraction from Input String """
 FEATURE_LIST = ['COMPARE', 'CONTRAST', 'RESULT', 'USE', 'IMPORTANT', 'RESEARCH', 'APPROACH',
-                'PUBLIC', 'BEFORE', 'BETTER_SOLUTION', 'CITATION', 'ACRONYM']
+                'PUBLIC', 'BEFORE', 'BETTER_SOLUTION', 'PROFESSIONALS', 'CITATION', 'ACRONYM',
+                'CONTAINS_YEAR', 'SEQUENCE', 'REFERENCE']
 
-REGEX_FEATURES = ['ACRONYM']
+REGEX_FEATURES = ['ACRONYM', 'CONTAINS_YEAR', 'SEQUENCE', 'REFERENCE']
 
 
 def extract_features_from_text(text: str):
@@ -25,8 +26,8 @@ def extract_features_from_text(text: str):
     # for each word in the word list, check if it appears in input text and add it to the text feature list
     for feature in FEATURE_LIST:
         if feature in REGEX_FEATURES:
-            regex = REGEX_CONSTANTS[feature]
-            if bool(re.match(regex, text)):
+            pattern = REGEX_CONSTANTS[feature]
+            if bool(pattern.match(text)):
                 text_feature_list.append(feature)
             continue
         word_list = lexicon_dict[feature]

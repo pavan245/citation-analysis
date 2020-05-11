@@ -29,6 +29,10 @@ ALL_LEXICONS = {
     
     'BETTER_SOLUTION': ['boost', 'enhance', 'defeat', 'improve', 'perform better', 'outperform', 'outweigh', 'surpass'],
 
+    'PROFESSIONALS': ['colleagues', 'community', 'computer scientists', 'computational linguists', 'discourse analysts',
+                      'expert', 'investigators', 'linguists', 'logicians', 'philosophers', 'psycholinguists',
+                      'psychologists', 'researchers', 'scholars', 'semanticists', 'scientists'],
+
     'CITATION': ['et al'],  # TODO (for Isaac) :: Write a complex regex for finding Citations in the text
 
 }
