@@ -11,6 +11,7 @@ class DataInstance:
         self.did = r_id
         self.text = text
         self.true_label = true_label
+        self.predicted_label = None
         self.features = extract_features_from_text(text)
 
     def print(self):
