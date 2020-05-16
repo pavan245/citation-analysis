@@ -4,6 +4,8 @@ from utils.csv import read_csv_file
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 train_file_path = project_root+'/data/tsv/train.tsv'
+test_file_path = project_root+'/data/tsv/test.tsv'
+
 print(train_file_path)
 
 data = read_csv_file(csv_file_path=train_file_path, delimiter='\t')

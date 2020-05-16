@@ -130,7 +130,7 @@ class MultiClassPerceptron:
         for epoch in range(self.epochs):
 
             # get a random number within the size of training set
-            rand_num = random.randint(0, train_len)
+            rand_num = random.randint(0, train_len-1)
             # pick a random data instance with the generated random number
             inst = X_train[rand_num]
 
