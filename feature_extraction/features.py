@@ -2,8 +2,9 @@ import feature_extraction.lexicons as lexicons
 from utils.constants import REGEX_CONSTANTS
 
 """ List of supported features for feature extraction from Input String """
-FEATURE_LIST = ['COMPARE', 'CONTRAST', 'RESULT', 'INCREASE', 'CHANGE', 'USE', 'PRESENT', 'IMPORTANT', 'RESEARCH',
-                'APPROACH', 'PUBLIC', 'BEFORE', 'BETTER_SOLUTION', 'PROFESSIONALS', 'MEDICINE', 'MATH', 'CITATION',
+FEATURE_LIST = ['COMPARE', 'CONTRAST', 'RESULT', 'INCREASE', 'CHANGE', 'USE', 'PRESENT',
+                'IMPORTANT', 'RESEARCH', 'APPROACH', 'PUBLIC', 'BEFORE', 'BETTER_SOLUTION',
+                'PROFESSIONALS', 'MEDICINE', 'MATH', 'COMPUTER_SCIENCE', 'CITATION',
                 'ACRONYM', 'CONTAINS_YEAR', 'SEQUENCE', 'REFERENCE', 'PERCENTAGE', 'URL']
 
 """ Feature Name for Theta Bias -- need to add it to the list of features for all data instances """

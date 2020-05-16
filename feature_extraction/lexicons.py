@@ -26,13 +26,13 @@ ALL_LEXICONS = {
                   'significant', 'remarkable', 'noteworthy', 'crucial', 'emerge'],
 
     'RESEARCH': ['research', 'paper', 'study', 'studie', 'apply', 'analyze', 'characteri', 'formali', 'investigat',
-                 'implement', 'interpret', 'examin', 'observ', 'predict', 'verify', 'work on', 'empirical',
+                 'implement', 'interpret', 'examin', 'observ', 'predict', 'verify', 'work on', 'empirical', 'determin',
                  'experiment', 'exploratory', 'ongoing', 'quantitative', 'qualitative', 'preliminary', 'statistical',
-                 'knowledge', 'underway', 'discuss', 'reference', 'publish', 'document'],
+                 'knowledge', 'underway', 'discuss', 'reference', 'publish', 'document', 'orientation'],
 
     'APPROACH': ['approach', 'account', 'algorithm', 'analys', 'approach', 'application', 'architecture', 'characteri',
                  'component', 'design', 'extension', 'formali', 'framework', 'implement', 'investigat', 'machine',
-                 'method', 'methodology', 'module', 'process', 'procedure', 'program', 'prototype', 'strategy',
+                 'method', 'methodology', 'module', 'process', 'procedure', 'program', 'prototype', 'strateg',
                  'system', 'technique', 'theory', 'tool', 'treatment'],
 
     'PUBLIC': ['acknowledge', 'admit', 'agree', 'assert', 'claim', 'complain', 'declare', 'deny', 'explain',
@@ -44,18 +44,25 @@ ALL_LEXICONS = {
     'BETTER_SOLUTION': ['boost', 'enhance', 'defeat', 'improve', 'perform better', 'outperform', 'outweigh', 'surpass'],
 
     'PROFESSIONALS': ['colleagues', 'community', 'computer scientists', 'computational linguists', 'discourse analysts',
-                      'expert', 'investigators', 'linguists', 'logicians', 'philosophers', 'psycholinguists',
+                      'expert', 'investigators', 'linguists', 'philosophers', 'psycholinguists',
                       'psychologists', 'researchers', 'scholars', 'semanticists', 'scientists'],
 
     'MEDICINE': ['medicine', 'tissue', 'gene', 'inflammatory', 'mutant', 'neuro', 'digest', 'ortho', 'kinase', 'pneumonia',
                  'clinical', 'therap', 'kidney', 'receptor', 'cancer', 'synthesis', 'protein', 'syndrom', 'toxin', 'death', 'calcium',
-                 'pharma', 'heart', 'disease', 'vitamin', 'tumor', 'blind', 'symptom', 'medical', 'vaccin', 'molecule',
+                 'pharma', 'heart', 'disease', 'vitamin', 'tumor', 'blind', 'symptom', 'medical', 'vaccin', 'molecule', 'rna',
                  'biotic', 'patient', 'cells', 'immune', 'blood', 'plasma', 'diagnos', 'neura', 'reproductive', 'plasm', 'drug',
-                 'membrane', 'muscle', 'contagious', 'inflam', 'physician', 'dna', 'genome', 'bacteria', 'cavity', 'antibodies'],
+                 'membrane', 'muscle', 'contagious', 'inflam', 'physician', 'dna', 'genome', 'bacteria', 'cavity', 'injury',
+                 'antibodies', 'liver', 'treatment', 'pcr', 'acid', 'chronic', 'respirat', 'oxygen', 'stroke', 'antioxidant',
+                 'metabolic', 'transmission', 'endogenous', 'syndrome', 'ultrasound', 'pathogen'],
 
-    'MATH': ['matrix', 'gaussian', 'variance', 'radius', 'function', 'comput', 'once', 'twice', 'thrice', 'diagram',
-             'vector', 'rectangle', 'logic', 'amount', 'maxim', 'minim', 'linear', 'magnitude', 'theorem', 'gradient',
-             'exponential', 'complex', 'graph', 'mean', 'equation', 'offset', 'calculat', 'coefficient', 'discrete', 'math'],
+    'MATH': ['matrix', 'gaussian', 'variance', 'radius', 'function', 'comput', 'once', 'twice', 'thrice', 'diagram', 'mean',
+             'vector', 'rectangle', 'logic', 'amount', 'maxim', 'minim', 'linear', 'magnitude', 'theorem', 'gradient', 'median',
+             'exponential', 'complex', 'graph', 'mean', 'equation', 'offset', 'calculat', 'coefficient', 'discrete', 'equation',
+             'math', 'correlation', 'outcome', 'divergence', 'differentiation', 'statistic', 'parameter', 'probabilit', 'multivariate'],
+
+    'COMPUTER_SCIENCE': ['database', 'software', 'evaluation', 'framework', 'computer', 'network', 'algorithm',
+                         'dataset','data sets', 'technology', 'kernel', 'metrics', 'nlp', 'xml', 'corpus', 'uml', 'system',
+                         'security', 'protocol'],
 
     'CITATION': ['et al'],  # TODO (for Isaac) :: Write a complex regex for finding Citations in the text
 
