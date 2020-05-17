@@ -33,7 +33,7 @@ def extract_features_from_text(text: str):
         # and match it with the input text
         if feature in REGEX_CONSTANTS:
             pattern = REGEX_CONSTANTS[feature]
-            if bool(pattern.match(text)):
+            if bool(pattern.search(text)):
                 text_feature_list.append(feature)
             continue
 
