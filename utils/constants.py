@@ -13,13 +13,13 @@ REGEX_CONSTANTS = {
     'CONTAINS_YEAR': re.compile(r"(?<=[^\d])1[8-9]\d\d(?=[^\d])|(?<=[^\d])2[0-1]\d{2}(?=[^\d])"),
 
     # Regex for matching Number Sequences in the text -> (15) / (10, 11, 112, 113) / (1,7,8,10-14)
-    'SEQUENCE': re.compile(r"\([\d-, ]+\)"),
+    'SEQUENCE': re.compile(r"\([\d\-,\s]+\)"),
 
     # Regex for matching References in the text -> [4] / [ 10-17, 19, 20] / [123, 500]
-    'REFERENCE': re.compile(r"\[[\d-, ]+\]"),
+    'REFERENCE': re.compile(r"\[[\d\-,\s]+\]"),
 
     # Regex for matching percentages in the text -> 99% / 99.99% / 10 % / 23.98% / 10-20% / 25%-30%
-    'PERCENTAGE': re.compile(r"\d[\d.-]+%"),
+    'PERCENTAGE': re.compile(r"\d[\d\.\-]+%"),
 
     # Regex for matching URLs -> http://www.phrap.org/, http://www. , http://carcfordjournals. ,
     # https://www.ims.uni-stuttgart.de/
