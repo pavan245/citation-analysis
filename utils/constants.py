@@ -13,10 +13,10 @@ REGEX_CONSTANTS = {
     'CONTAINS_YEAR': re.compile(r"(?<=[^0-9])1[8-9][0-9]{2}(?=[^0-9$])|(?<=[^0-9])20[0-2][0-9](?=[^0-9$])"),
 
     # Regex for matching Number Sequences in the text -> (15) / (10, 11, 112, 113) / (1,7,8,10-14)
-    'SEQUENCE': re.compile(r"\([\d\-,\s]+\)"),
+    'SEQUENCE': re.compile(r"\([\d.*\)"),
 
     # Regex for matching References in the text -> [4] / [ 10-17, 19, 20] / [123, 500]
-    'REFERENCE': re.compile(r"\[[\d\-,\s]+\]"),
+    'REFERENCE': re.compile(r"\[\d.*\]"),
 
     # Regex for matching percentages in the text -> 99% / 99.99% / 10 % / 23.98% / 10-20% / 25%-30%
     'PERCENTAGE': re.compile(r"\d[\d\.\-]+%"),
