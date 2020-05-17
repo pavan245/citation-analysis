@@ -5,7 +5,8 @@ from utils.constants import REGEX_CONSTANTS
 FEATURE_LIST = ['COMPARE', 'CONTRAST', 'RESULT', 'INCREASE', 'CHANGE', 'USE', 'PRESENT',
                 'IMPORTANT', 'RESEARCH', 'APPROACH', 'PUBLIC', 'BEFORE', 'BETTER_SOLUTION',
                 'PROFESSIONALS', 'MEDICINE', 'MATH', 'COMPUTER_SCIENCE', 'CITATION',
-                'ACRONYM', 'CONTAINS_YEAR', 'SEQUENCE', 'REFERENCE', 'PERCENTAGE', 'URL']
+                'ACRONYM', 'CONTAINS_YEAR', 'SEQUENCE', 'REFERENCE', 'PERCENTAGE',
+                'CONTAINS_URL', 'ENDS_WITH_RIDE', 'ENDS_WITH_RINE', 'ENDS_WITH_ETHYL']
 
 """ Feature Name for Theta Bias -- need to add it to the list of features for all data instances """
 THETA_BIAS_FEATURE = 'THETA_BIAS'

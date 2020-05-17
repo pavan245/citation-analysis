@@ -85,14 +85,18 @@ class MultiClassPerceptron:
 
     """
 
-    def __init__(self, epochs: int = 2000, learning_rate: float = 1):
+    def __init__(self, epochs: int = 5000, learning_rate: float = 1, random_state: int = 4):
         """
         :type epochs: int
         :type learning_rate: float
+        :type random_state: int
 
         :param epochs: number of training iterations
         :param learning_rate: learning rate for updating weights, Default is 1
+        :param random_state: random state for shuffling the data, useful for reproducing the results.
+                    Default is 4.
         """
+        self.random_state = random_state
         self.perceptron_dict = OrderedDict()  # contains Key : label and value : Perceptron Object for label
         self.epochs = epochs
         self.learning_rate = learning_rate
@@ -124,7 +128,7 @@ class MultiClassPerceptron:
 
         # Dictionary for storing label->Perceptron() objects, Create a new Perceptron object for each label
         for label in labels:
-            self.perceptron_dict[label] = Perceptron(label, get_sample_weights_with_features(-0.5), -0.5)
+            self.perceptron_dict[label] = Perceptron(label, get_sample_weights_with_features(theta_bias=-0.5), theta_bias=-0.5)
 
         next_print = int(self.epochs/10)
 
@@ -160,7 +164,7 @@ class MultiClassPerceptron:
                 self.perceptron_dict[inst.true_label].update_weights(inst.features, self.learning_rate, reward=True)
 
             # It's important to shuffle the data during every epoch
-            random.shuffle(X_train)
+            random.Random(self.random_state).shuffle(X_train)
 
     def predict(self, X_test: list):
         """
