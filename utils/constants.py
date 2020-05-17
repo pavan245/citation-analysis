@@ -7,7 +7,8 @@ AVG_MACRO = 'MACRO'
 REGEX_CONSTANTS = {
 
     # Regex for matching Acronym Patterns -> COVID-19 / SEKA / SMY2 / EAP1 / SCP16 / ASC1 / DENV-2
-    'ACRONYM': re.compile(r"[m0-9\W^]([A-Z]{2,})[s\.,:\-$]"),
+    #'ACRONYM': re.compile(r"[m0-9\W^]([A-Z]{2,})[s\.,:\-$]"),
+    'ACRONYM': re.compile(r"^[A-Z]{2,}[\.,:;\b\s]|[\s\b]m?[A-Z]{2,}[\.,:;\b\s]"),
 
     # Regex for matching Years in the text - > 1995 / 2020 / 2019
     'CONTAINS_YEAR': re.compile(r"(?<=[^0-9])1[8-9][0-9]{2}(?=[^0-9$])|(?<=[^0-9])20[0-2][0-9](?=[^0-9$])"),
