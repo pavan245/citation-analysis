@@ -126,8 +126,14 @@ class MultiClassPerceptron:
         for label in labels:
             self.perceptron_dict[label] = Perceptron(label, get_sample_weights_with_features(-0.5), -0.5)
 
+        next_print = int(self.epochs/10)
+
         # Training Iterations
         for epoch in range(self.epochs):
+
+            if epoch >= next_print:
+                print('Training Multi-Class Perceptron Classifier..... (', epoch, '/', self.epochs, ')')
+                next_print = next_print + int(self.epochs/10)
 
             # get a random number within the size of training set
             rand_num = random.randint(0, train_len-1)
@@ -168,6 +174,8 @@ class MultiClassPerceptron:
 
         if X_test is None or len(X_test) <= 0:
             raise Exception('Testing Data cannot be empty')
+
+        print('Predicting..... ')
 
         y_test = []
         labels = list(self.perceptron_dict.keys())
