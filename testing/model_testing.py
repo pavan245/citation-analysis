@@ -17,7 +17,7 @@ X_test_inst = read_csv_file(test_file_path, '\t')
 
 epochs = int(len(X_train_inst)*0.95)
 
-clf = MultiClassPerceptron(epochs=epochs, learning_rate=1, random_state=10)
+clf = MultiClassPerceptron(epochs=epochs, learning_rate=1, random_state=42)
 
 clf.fit(X_train=X_train_inst, labels=list(labels))
 

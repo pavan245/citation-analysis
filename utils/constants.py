@@ -22,8 +22,7 @@ REGEX_CONSTANTS = {
     # Regex for matching percentages in the text -> 99% / 99.99% / 10 % / 23.98% / 10-20% / 25%-30%
     'PERCENTAGE': re.compile(r"\d[\d\.\-]+%"),
 
-    # Regex for matching URLs -> http://www.phrap.org/, http://www. , http://carcfordjournals. ,
-    # https://www.ims.uni-stuttgart.de/
+    # Regex for matching URLs -> http://www.phrap.org/, http://www. , http://carcfordjournals.
     'CONTAINS_URL': re.compile(r"https?://\S+"),
 
     'ENDS_WITH_RIDE': re.compile(r"ride\b"),

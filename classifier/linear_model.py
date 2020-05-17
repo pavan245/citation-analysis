@@ -62,9 +62,9 @@ class Perceptron:
         for feature in features:
             feature_weight = self.weights[feature]
             if penalize:
-                self.weights[feature] = feature_weight - (learning_rate * 1)
+                self.weights[feature] = round(feature_weight - (learning_rate * 1), 5)
             if reward:
-                self.weights[feature] = feature_weight + (learning_rate * 1)
+                self.weights[feature] = round(feature_weight + (learning_rate * 1), 5)
 
 
 class MultiClassPerceptron:
@@ -85,7 +85,7 @@ class MultiClassPerceptron:
 
     """
 
-    def __init__(self, epochs: int = 5000, learning_rate: float = 1, random_state: int = 4):
+    def __init__(self, epochs: int = 5000, learning_rate: float = 1, random_state: int = 42):
         """
         :type epochs: int
         :type learning_rate: float
@@ -94,7 +94,7 @@ class MultiClassPerceptron:
         :param epochs: number of training iterations
         :param learning_rate: learning rate for updating weights, Default is 1
         :param random_state: random state for shuffling the data, useful for reproducing the results.
-                    Default is 4.
+                    Default is 42.
         """
         self.random_state = random_state
         self.perceptron_dict = OrderedDict()  # contains Key : label and value : Perceptron Object for label
@@ -128,9 +128,13 @@ class MultiClassPerceptron:
 
         # Dictionary for storing label->Perceptron() objects, Create a new Perceptron object for each label
         for label in labels:
-            self.perceptron_dict[label] = Perceptron(label, get_sample_weights_with_features(theta_bias=-0.5), theta_bias=-0.5)
+            sample_weights = get_sample_weights_with_features(theta_bias=0.9, random_state=self.random_state)
+            self.perceptron_dict[label] = Perceptron(label, sample_weights, theta_bias=0.9)
 
         next_print = int(self.epochs/10)
+
+        random.seed(self.random_state)
+        random_list = [random.randint(0, train_len-1) for i in range(self.epochs)]
 
         # Training Iterations
         for epoch in range(self.epochs):
@@ -139,10 +143,8 @@ class MultiClassPerceptron:
                 print('Training Multi-Class Perceptron Classifier..... (', epoch, '/', self.epochs, ')')
                 next_print = next_print + int(self.epochs/10)
 
-            # get a random number within the size of training set
-            rand_num = random.randint(0, train_len-1)
-            # pick a random data instance with the generated random number
-            inst = X_train[rand_num]
+            # Pick a number from random list
+            inst = X_train[random_list[epoch]]
 
             perceptron_scores = []  # list for storing perceptron scores for each label
             for label, perceptron in self.perceptron_dict.items():
@@ -163,7 +165,7 @@ class MultiClassPerceptron:
                 # increase weights
                 self.perceptron_dict[inst.true_label].update_weights(inst.features, self.learning_rate, reward=True)
 
-            # It's important to shuffle the data during every epoch
+            # It's important to shuffle the list during every epoch
             random.Random(self.random_state).shuffle(X_train)
 
     def predict(self, X_test: list):
@@ -196,15 +198,22 @@ class MultiClassPerceptron:
         return y_test
 
 
-def get_sample_weights_with_features(theta_bias: float = None):
+def get_sample_weights_with_features(theta_bias: float = None, random_state: int = 42):
     """
     This function creates a dictionary with feature as a key and a random floating number (feature weight) as value.
     Weights for each feature is a floating number between -1 and 1
 
+    :type theta_bias: float
+    :type random_state: int
+
+    :param theta_bias: value of theta bias variable
+    :param random_state: random seed number for reproducing the results
+
     :return: returns a dictionary of random weights for each feature
     """
     weights = {THETA_BIAS_FEATURE: theta_bias}
+    random.seed(random_state)
     for feature in FEATURE_LIST:
-        weights[feature] = round(random.uniform(-1.0, 1.0), 4)
+        weights[feature] = round(random.uniform(-1.0, 1.0), 5)
 
     return weights
