@@ -10,7 +10,7 @@ REGEX_CONSTANTS = {
     'ACRONYM': re.compile(r"[m0-9\W]([A-Z]{2,})[s0-9\W]"),
 
     # Regex for matching Years in the text - > 1995 / 2020 / 2019
-    'CONTAINS_YEAR': re.compile(r"(?<=[^\d])1[8-9]\d\d(?=[^\d])|(?<=[^\d])2[0-1]\d{2}(?=[^\d])"),
+    'CONTAINS_YEAR': re.compile(r"(?<=[^0-9])1[8-9][0-9]{2}(?=[^0-9$])|(?<=[^0-9])20[0-2][0-9](?=[^0-9$])"),
 
     # Regex for matching Number Sequences in the text -> (15) / (10, 11, 112, 113) / (1,7,8,10-14)
     'SEQUENCE': re.compile(r"\([\d\-,\s]+\)"),
