@@ -128,8 +128,8 @@ class MultiClassPerceptron:
 
         # Dictionary for storing label->Perceptron() objects, Create a new Perceptron object for each label
         for label in labels:
-            sample_weights = get_sample_weights_with_features(theta_bias=0.9, random_state=self.random_state)
-            self.perceptron_dict[label] = Perceptron(label, sample_weights, theta_bias=0.9)
+            sample_weights = get_sample_weights_with_features(theta_bias=-0.25, random_state=self.random_state)
+            self.perceptron_dict[label] = Perceptron(label, sample_weights, theta_bias=-0.25)
 
         next_print = int(self.epochs/10)
 
