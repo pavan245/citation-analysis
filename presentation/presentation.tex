@@ -9,14 +9,15 @@
 % define using packages
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage {minted}
 
 % the general information.
-\title[Largest Prime Number?] % (optional, only for long titles)
-{Citation Analysis}
-\subtitle{Classifying Links between Scientific Publications}
+\title[] % (optional, only for long titles)
+{Citation Intent Classification}
+\subtitle{Identifying the Intent of a Citation in scientific papers}
 
 \author[tmip, hieutt] % (optional, for multiple authors)
-{Pavan Mandava and Isaac Riley}
+{Isaac Riley and Pavan Mandava}
 \institute[Universities Here and There] % (optional)
 {
   \inst{1}%
@@ -34,9 +35,101 @@
 % begin presentation content
 \begin{document}
 
+%%%% Slide : 1 -- INTRO
 \begin{frame}
 \titlepage
 \end{frame}
+
+
+%%%% TASK DESCRIPTION ----- Slide 2
+\begin{frame}
+\frametitle{Task Description}
+
+\begin{itemize}
+
+\item Identifying intent of a citation in scientific papers
+\item Three Intent categories/classes from the data set
+	\begin{enumerate}
+		\item background (background information)
+		\item method (use of methods/tools)
+		\item result (comparing results)
+	\end{enumerate}
+\item Classification Task 
+	\begin{itemize}
+		\item Assign a discrete class (intent) for each data point
+	\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+%%%% DATA SET ---- Slide 3
+\begin{frame}
+\frametitle{Data set}
+
+\begin{itemize}
+
+\item Training Data: 8.2K+ data points
+	\begin{enumerate}
+		\item background - 4.8K
+		\item method - 2.3K
+		\item result - 1.1K
+	\end{enumerate}
+\item Testing Data: 1.8K data points
+	\begin{enumerate}
+		\item background - 1K
+		\item method - 0.6K
+		\item result - 0.2K
+	\end{enumerate}
+\end{itemize}
+
+\end{frame}
+
+
+%%%% Approach/Architectures ---- Slide 4
+\begin{frame}[fragile]
+\frametitle{Approach \& Architecture}
+\framesubtitle{Classifier Implementation}
+
+Base Classifier: {\bf {\color{red} Perceptron}}
+\begin{itemize}
+	\item Linear Classifier
+	\item Binary Classifier
+\end{itemize}
+\bigskip
+
+\begin{minted}[autogobble, breaklines,breakanywhere, fontfamily=helvetica, fontsize=\small]{python}
+class Perceptron:
+   def __init__(self, label: str, weights: dict, theta_bias: float)
+   def score(self, features: list)
+   def update_weights(self, features: list, learning_rate: float, penalize: bool, reward: bool)
+
+class MultiClassPerceptron:
+   def __init__(self, epochs: int,learning_rate: float,random_state: int)
+   def fit(self, X_train: list, labels: list)
+   def predict(self, X_test: list)
+
+\end{minted}
+
+\end{frame}
+
+
+
+%%%% Approach/Architectures ---- Slide 5
+\begin{frame}[fragile]
+\frametitle{Approach \& Architecture}
+\framesubtitle{Feature Representation}
+
+Lexicons and Regular Expressions
+
+\begin{itemize}
+	\item LEXICONS
+	\item REGEX
+\end{itemize}
+
+
+
+\end{frame}
+
 
 
 \begin{frame}
