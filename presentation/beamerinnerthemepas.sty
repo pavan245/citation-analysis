@@ -1,0 +1,49 @@
+% should cover
+% + Title and part pages.
+% + Itemize environments.
+% + Enumerate environments.
+% + Description environments.
+% + Block environments.
+% + Theorem and proof environments.
+% + Figures and tables.
+% + Footnotes.
+% + Bibliography entries.
+
+\mode<presentation>
+
+
+% Title page
+\defbeamertemplate*{title page}{pas}[1][]
+{
+   \vskip1.8cm%
+	\begin{beamercolorbox}[wd=10cm,leftskip=1.4cm,sep=8pt,center,#1]{title page header}
+      \usebeamerfont{title}\inserttitle%
+      \ifx\insertsubtitle\@empty%
+          \strut\par%
+      \else
+          \vskip1ex
+          \par{\usebeamerfont*{subtitle}{\usebeamercolor[fg]{subtitle}\insertsubtitle}\strut\par}%
+      \fi%%
+   \end{beamercolorbox}%
+    \vskip3ex%
+    \begin{beamercolorbox}[wd=12cm,leftskip=3cm,center,#1]{author}
+      \usebeamerfont{author}\insertauthor%
+    \end{beamercolorbox}
+     \vskip0.2cm%
+    \begin{beamercolorbox}[wd=12cm,leftskip=3cm,center,#1]{date}
+      \usebeamerfont{author}\insertdate%
+    \end{beamercolorbox}
+  \vfill
+}
+
+
+
+% Items
+\setbeamertemplate{items}[square]
+\setbeamertemplate{sections/subsections in toc}[square]
+
+%bibliography
+\setbeamertemplate{bibliography item}[text]
+
+\mode
+<all>

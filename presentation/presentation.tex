@@ -1,0 +1,70 @@
+\documentclass[
+  xcolor={svgnames},
+  hyperref={colorlinks,citecolor=DeepPink4,linkcolor=DarkRed,urlcolor=DarkBlue}
+  ]{beamer}
+
+% define using customized theme.
+\usetheme{pas}
+
+% define using packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% the general information.
+\title[Largest Prime Number?] % (optional, only for long titles)
+{Citation Analysis}
+\subtitle{Classifying Links between Scientific Publications}
+
+\author[tmip, hieutt] % (optional, for multiple authors)
+{Pavan Mandava and Isaac Riley}
+\institute[Universities Here and There] % (optional)
+{
+  \inst{1}%
+  Computational Linguistics, M.Sc.\\
+  \and
+  \inst{2}%
+  Computational Linguistics, M.Sc.\\
+}
+\date[] % (optional)
+{May 20, 2020}
+\subject{Computational Linguistics}
+
+
+
+% begin presentation content
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+\begin{frame}
+\frametitle{There Is No Largest Prime Number}
+\framesubtitle{The proof uses \textit{reductio ad absurdum}.}
+\begin{theorem}
+There is no largest prime number. \end{theorem}
+\begin{enumerate}
+\item<1-| alert@1> Suppose $p$ were the largest prime number.
+\item<2-> Let $q$ be the product of the first $p$ numbers.
+\item<3-> Then $q+1$ is not divisible by any of them.
+\item<1-> But $q + 1$ is greater than $1$, thus divisible by some prime
+number not in the first $p$ numbers.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{A longer title}
+\begin{itemize}
+\item one
+\item two
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[allowframebreaks]
+   \frametitle{References}
+   \bibliographystyle{plain}
+   \bibliography{lib}
+\end{frame}
+
+\end{document}
