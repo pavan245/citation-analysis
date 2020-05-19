@@ -8,24 +8,35 @@ project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 train_file_path = project_root+'/data/tsv/train.tsv'
 test_file_path = project_root+'/data/tsv/test.tsv'
 
-
+# Read the training dataset
 X_train_inst = read_csv_file(train_file_path, '\t')
 
+# set of labels from Training data
 labels = set([inst.true_label for inst in X_train_inst])
 
+# Read test data set
 X_test_inst = read_csv_file(test_file_path, '\t')
 
-epochs = int(len(X_train_inst)*0.75)
+# number of training iterations
+epochs = int(len(X_train_inst)*0.9)
 
-clf = MultiClassPerceptron(epochs, 1)
+# create MultiClassPerceptron classifier object
+clf = MultiClassPerceptron(epochs=epochs, learning_rate=0.9, random_state=42)
 
+# train the model
 clf.fit(X_train=X_train_inst, labels=list(labels))
 
+
+# predict
 y_test = clf.predict(X_test_inst)
 
 y_true = [inst.true_label for inst in X_test_inst]
 
-f1_score_list = f1_score(y_true, y_test, labels, const.AVG_MICRO)
+# Model Evaluation
+f1_score_micro = f1_score(y_true, y_test, labels, const.AVG_MICRO)
+# f1_score_macro = f1_score(y_true, y_test, labels, const.AVG_MACRO)
+# f1_score_none = f1_score(y_true, y_test, labels, None)
 
-for result in f1_score_list:
+# Print F1 Score
+for result in f1_score_micro:
     result.print_result()
