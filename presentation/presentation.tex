@@ -48,12 +48,14 @@
 \begin{itemize}
 
 \item Identifying intent of a citation in scientific papers
+\bigskip
 \item Three Intent categories/classes from the data set
 	\begin{enumerate}
 		\item background (background information)
 		\item method (use of methods/tools)
 		\item result (comparing results)
 	\end{enumerate}
+\bigskip
 \item {\bf Classification Task }
 	\begin{itemize}
 		\item Assign a discrete class (intent) for each data point
@@ -74,6 +76,7 @@
 		\item method - 2.3K
 		\item result - 1.1K
 	\end{enumerate}
+\bigskip
 \item Testing Data: 1.8K data points
 	\begin{enumerate}
 		\item background - 1K
@@ -139,38 +142,96 @@ Lexicons and Regular Expressions ($\approx$ 30 Features)
 		\end{itemize}
 \end{itemize}
 
-
-
 \end{frame}
 
+%%%% Evaluation ---- Slide 6
+\begin{frame}[fragile]
+\frametitle{Evaluation of the Classifier}
+\framesubtitle{F1 Score}
 
+\bigskip
 
-\begin{frame}
-\frametitle{There Is No Largest Prime Number}
-\framesubtitle{The proof uses \textit{reductio ad absurdum}.}
-\begin{theorem}
-There is no largest prime number. \end{theorem}
-\begin{enumerate}
-\item<1-| alert@1> Suppose $p$ were the largest prime number.
-\item<2-> Let $q$ be the product of the first $p$ numbers.
-\item<3-> Then $q+1$ is not divisible by any of them.
-\item<1-> But $q + 1$ is greater than $1$, thus divisible by some prime
-number not in the first $p$ numbers.
-\end{enumerate}
-\end{frame}
-
-\begin{frame}{A longer title}
 \begin{itemize}
-\item one
-\item two
+	\item F1 Score
+		\begin{itemize}
+			\item weighted average of Precision and Recall
+		\end{itemize}
+		\bigskip
+		\begin{minted}[autogobble, breaklines,breakanywhere, fontfamily=helvetica]{python}
+		def f1_score(y_true, y_pred, labels, average)
+		\end{minted}
+		\bigskip
+	\item Averaging
+		\begin{itemize}
+			\item MACRO
+			\item MICRO
+			\item None
+		\end{itemize}
+	\bigskip
+	\item Why {\color{red} MACRO} and {\color{red}MICRO} ?
+	
 \end{itemize}
+
+\end{frame}
+
+%%%% Results ---- Slide 7
+\begin{frame}
+\frametitle{Model Performance}
+\framesubtitle{Results}
+
+\begin{table}
+\def\arraystretch{1.5}
+	{\setlength{\tabcolsep}{2em}
+	\begin{tabular}{| l | c | c |} \hline
+		 {\bf Averaging} & {\bf Score} \\
+		 \hline \hline
+		 MACRO & 0.59 \\
+		  \hline
+		 MICRO & 0.57 \\
+		  \hline
+		 background & 0.63 \\
+		 method & 0.48 \\
+		 result & 0.55 \\
+		  \hline
+	 \end{tabular}}
+
+\caption{F1-Score Results}
+\end{table}
+
 \end{frame}
 
 
-\begin{frame}[allowframebreaks]
-   \frametitle{References}
-   \bibliographystyle{plain}
-   \bibliography{lib}
+%%%% Next Steps ---- Slide 8
+\begin{frame}
+\frametitle{Next Steps}
+	\begin{itemize}
+		\item Better Feature Representation - Word Embeddings
+		\begin{itemize}
+			\item word2vec
+			\item BERT
+			\item ELMo
+			\item \dots{}
+		\end{itemize}
+		
+		\item Better Classifier (Non-Linear / Neural Networks)
+		\begin{itemize}
+			\item BiRNNs
+			\item BiLSTMs
+			\item CNNs
+			\item \dots{}
+		\end{itemize}
+		
+		\item Interaction with other groups
+	\end{itemize}
+\end{frame}
+
+%%%% THANK YOU -- Slide 9
+\begin{frame}
+\usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}
+  \centering \Large
+  	Thanks for listening
 \end{frame}
 
 \end{document}
+
+
