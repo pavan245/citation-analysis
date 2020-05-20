@@ -18,10 +18,10 @@ labels = set([inst.true_label for inst in X_train_inst])
 X_test_inst = read_csv_file(test_file_path, '\t')
 
 # number of training iterations
-epochs = int(len(X_train_inst)*0.9)
+epochs = int(len(X_train_inst)*1.5)
 
 # create MultiClassPerceptron classifier object
-clf = MultiClassPerceptron(epochs=epochs, learning_rate=0.9, random_state=42)
+clf = MultiClassPerceptron(epochs=epochs, learning_rate=0.75, random_state=101)
 
 # train the model
 clf.fit(X_train=X_train_inst, labels=list(labels))
@@ -34,9 +34,9 @@ y_true = [inst.true_label for inst in X_test_inst]
 
 # Model Evaluation
 f1_score_micro = f1_score(y_true, y_test, labels, const.AVG_MICRO)
-# f1_score_macro = f1_score(y_true, y_test, labels, const.AVG_MACRO)
-# f1_score_none = f1_score(y_true, y_test, labels, None)
+f1_score_macro = f1_score(y_true, y_test, labels, const.AVG_MACRO)
+f1_score_none = f1_score(y_true, y_test, labels, None)
 
 # Print F1 Score
-for result in f1_score_micro:
+for result in f1_score_micro + f1_score_macro + f1_score_none:
     result.print_result()

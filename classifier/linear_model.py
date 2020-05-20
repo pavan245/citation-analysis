@@ -212,8 +212,8 @@ def get_sample_weights_with_features(theta_bias: float = None, random_state: int
     :return: returns a dictionary of random weights for each feature
     """
     weights = {THETA_BIAS_FEATURE: theta_bias}
-    random.seed(random_state)
     for feature in FEATURE_LIST:
+        random.seed(random_state)
         weights[feature] = round(random.uniform(-1.0, 1.0), 5)
 
     return weights

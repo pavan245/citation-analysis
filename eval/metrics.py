@@ -177,4 +177,9 @@ class Result:
 
     def print_result(self):
         """ Prints F1 Score"""
-        print('F1 Score :: ', self.f1_score, ' Label :: ', self.label, ' Average :: ', self.average)
+        print_line = 'F1 Score :: ' + str(self.f1_score)
+        if self.label:
+            print_line += ' Label :: ' + self.label
+        if self.average:
+            print_line += ' Average :: ' + self.average
+        print(print_line)
