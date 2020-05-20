@@ -54,7 +54,7 @@
 		\item method (use of methods/tools)
 		\item result (comparing results)
 	\end{enumerate}
-\item Classification Task 
+\item {\bf Classification Task }
 	\begin{itemize}
 		\item Assign a discrete class (intent) for each data point
 	\end{itemize}
@@ -119,11 +119,24 @@ class MultiClassPerceptron:
 \frametitle{Approach \& Architecture}
 \framesubtitle{Feature Representation}
 
-Lexicons and Regular Expressions
+Lexicons and Regular Expressions ($\approx$ 30 Features)
+\bigskip
 
 \begin{itemize}
 	\item LEXICONS
+		\begin{minted}[autogobble, breaklines,breakanywhere, fontfamily=helvetica, fontsize=\small]{python}
+		ALL_LEXICONS = {
+		    'INCREASE': ['increase', 'grow', 'intensify', 'build up', 'explode'],
+		    'USE': ['use', 'using', 'apply', 'applied', 'employ', 'make use'],
+		    .....
+		}
+		\end{minted}
 	\item REGEX
+		\begin{itemize}
+		    \item $ACRONYM$
+		    \item $CONTAINS\_URL$
+		    \item $ENDS\_WITH\_ETHYL$
+		\end{itemize}
 \end{itemize}
 
 
