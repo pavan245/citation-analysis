@@ -1,4 +1,4 @@
-from utils.models import DataInstance
+from utils.csv import DataInstance
 from feature_extraction.features import FEATURE_LIST, THETA_BIAS_FEATURE
 from collections import OrderedDict
 import random
@@ -42,23 +42,21 @@ class Perceptron:
 
         return score_val
 
-    def update_weights(self, features: list, learning_rate: float = 1, penalize: bool = None, reward: bool = None):
+    def update_weights(self, features: list, learning_rate: float = 1.0, penalize: bool = False, reward: bool = False):
         """
         This function is used to update weights during the training of the Perceptron Classifier.
         It takes a list of features as parameter and updates(either increase or decrease) the
         weights for these individual features based on learning rate parameter
 
         :param features: list of features from Input DataInstance
-        :param learning_rate: Default is 1
-        :param penalize: If True, decreases the weights for each feature. Default is None
-        :param reward: If True, increases the weights for each feature. Default is None
+        :param learning_rate: Default is 1.0
+        :param penalize: If True, decreases the weights for each feature. Default is False
+        :param reward: If True, increases the weights for each feature. Default is False
 
-        - If both penalize and reward are None, weights will not get updated.
-        - If both penalize and reward are True without learning rate(or learning rate 1),
+        - If both penalize and reward params are False, weights will not get updated.
+        - If both penalize and reward are True without a learning rate(or learning rate 1),
             weights for the features remain the same.
-
         """
-
         for feature in features:
             feature_weight = self.weights[feature]
             if penalize:
@@ -82,10 +80,8 @@ class MultiClassPerceptron:
         - increase the weights for the Perceptron Classifier of true label (reward)
 
      This model also shuffles the training data after each epoch.
-
     """
-
-    def __init__(self, epochs: int = 5000, learning_rate: float = 1, random_state: int = 42):
+    def __init__(self, epochs: int = 5000, learning_rate: float = 1.0, random_state: int = 42):
         """
         :type epochs: int
         :type learning_rate: float
@@ -198,7 +194,7 @@ class MultiClassPerceptron:
         return y_test
 
 
-def get_sample_weights_with_features(theta_bias: float = None, random_state: int = 42):
+def get_sample_weights_with_features(theta_bias: float = 0.0, random_state: int = 42):
     """
     This function creates a dictionary with feature as a key and a random floating number (feature weight) as value.
     Weights for each feature is a floating number between -1 and 1
