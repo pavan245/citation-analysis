@@ -81,7 +81,7 @@ class MultiClassPerceptron:
 
      This model also shuffles the training data after each epoch.
     """
-    def __init__(self, epochs: int = 5000, learning_rate: float = 1.0, random_state: int = 42):
+    def __init__(self, epochs: int = 5, learning_rate: float = 1.0, random_state: int = 42):
         """
         :type epochs: int
         :type learning_rate: float
@@ -127,39 +127,34 @@ class MultiClassPerceptron:
             sample_weights = get_sample_weights_with_features(theta_bias=-0.25, random_state=self.random_state)
             self.perceptron_dict[label] = Perceptron(label, sample_weights, theta_bias=-0.25)
 
-        next_print = int(self.epochs/10)
-
-        random.seed(self.random_state)
-        random_list = [random.randint(0, train_len-1) for i in range(self.epochs)]
-
         # Training Iterations
         for epoch in range(self.epochs):
 
-            if epoch >= next_print:
-                print('Training Multi-Class Perceptron Classifier..... (', epoch, '/', self.epochs, ')')
-                next_print = next_print + int(self.epochs/10)
+            print('Training Epoch :: (', (epoch+1), '/', self.epochs, ')')
 
-            # Pick a number from random list
-            inst = X_train[random_list[epoch]]
+            for i in range(train_len):
 
-            perceptron_scores = []  # list for storing perceptron scores for each label
-            for label, perceptron in self.perceptron_dict.items():
-                perceptron_scores.append(perceptron.score(inst.features))
+                # Pick a number from random list
+                inst = X_train[i]
 
-            # find the max score from the list of scores
-            max_score = max(perceptron_scores)
+                perceptron_scores = []  # list for storing perceptron scores for each label
+                for label, perceptron in self.perceptron_dict.items():
+                    perceptron_scores.append(perceptron.score(inst.features))
 
-            # find the label that corresponds to max score
-            label_max_score = labels[perceptron_scores.index(max_score)]
+                # find the max score from the list of scores
+                max_score = max(perceptron_scores)
 
-            # if the label with max score is different from the label of this data instance,
-            # then decrease the weights(penalize) for the Perceptron of label with max score
-            # and increase the weights(reward) for the Perceptron of data instance label
-            if inst.true_label != label_max_score:
-                # decrease weights
-                self.perceptron_dict[label_max_score].update_weights(inst.features, self.learning_rate, penalize=True)
-                # increase weights
-                self.perceptron_dict[inst.true_label].update_weights(inst.features, self.learning_rate, reward=True)
+                # find the label that corresponds to max score
+                label_max_score = labels[perceptron_scores.index(max_score)]
+
+                # if the label with max score is different from the label of this data instance,
+                # then decrease the weights(penalize) for the Perceptron of label with max score
+                # and increase the weights(reward) for the Perceptron of data instance label
+                if inst.true_label != label_max_score:
+                    # decrease weights
+                    self.perceptron_dict[label_max_score].update_weights(inst.features, self.learning_rate, penalize=True)
+                    # increase weights
+                    self.perceptron_dict[inst.true_label].update_weights(inst.features, self.learning_rate, reward=True)
 
             # It's important to shuffle the list during every epoch
             random.Random(self.random_state).shuffle(X_train)

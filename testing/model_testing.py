@@ -18,10 +18,10 @@ labels = set([inst.true_label for inst in X_train_inst])
 X_test_inst = read_csv_file(test_file_path, '\t')
 
 # number of training iterations
-epochs = int(len(X_train_inst)*1.5)
+epochs = 50
 
 # create MultiClassPerceptron classifier object
-clf = MultiClassPerceptron(epochs=epochs, learning_rate=0.75, random_state=101)
+clf = MultiClassPerceptron(epochs=epochs, learning_rate=0.5, random_state=101)
 
 # train the model
 clf.fit(X_train=X_train_inst, labels=list(labels))
