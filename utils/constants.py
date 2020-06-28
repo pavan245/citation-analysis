@@ -32,3 +32,5 @@ REGEX_CONSTANTS = {
     'ENDS_WITH_ETHYL': re.compile(r"ethyl\b")
 
 }
+
+CLASS_LABELS = {"background": 0, "method": 1, "result": 2}
