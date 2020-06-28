@@ -11,6 +11,7 @@ from allennlp.data.token_indexers import SingleIdTokenIndexer, ELMoTokenCharacte
 import utils.constants as const
 
 
+@DatasetReader.register("citation_dataset_reader") # type for config files
 class CitationDataSetReader(DatasetReader):
     def __init__(self):
         super().__init__()
