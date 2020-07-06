@@ -1,9 +1,10 @@
-from utils.nn_reader import read_csv
+"""
+Simple feed-forward neural network in PyTorch for baseline results on Scicite data.
+Date: July 5th, 2020
+"""
 
 import torch
-
-
-
+from utils.nn_reader import read_csv_nn
 
 
 class Feedforward(torch.nn.Module):
@@ -26,63 +27,41 @@ class Feedforward(torch.nn.Module):
             return output
 
 
-"""
-from sklearn.datasets import make_blobs
-def blob_label(y, label, loc): # assign labels
-    target = numpy.copy(y)
-    for l in loc:
-        target[y == l] = label
-    return target
-X_train, y_train = make_blobs(n_samples=40, n_features=2, cluster_std=1.5, shuffle=True)
-X_train = torch.FloatTensor(X_train)
-y_train = torch.FloatTensor(blob_label(y_train, 0, [0]))
-y_train = torch.FloatTensor(blob_label(y_train, 1, [1,2,3]))
-x_test, y_test = make_blobs(n_samples=10, n_features=2, cluster_std=1.5, shuffle=True)
-x_test = torch.FloatTensor(x_test)
-y_test = torch.FloatTensor(blob_label(y_test, 0, [0]))
-y_test = torch.FloatTensor(blob_label(y_test, 1, [1,2,3]))
-"""
 
+if __name__=='__main__':
+    X_train, y_train, X_test = read_csv_nn()
 
-X_train = torch.as_tensor(X_train)
-X_test = torch.as_tensor(X_test)
-y_train = torch.as_tensor(y_train)
+    X_train = torch.FloatTensor(X_train)
+    X_test = torch.FloatTensor(X_test)
+    y_train_ = torch.FloatTensor(y_train)
+    y_train = torch.max(torch.FloatTensor(y_train_),1)[1]
 
+    model = Feedforward(28, 9, 3)
+    criterion = torch.nn.CrossEntropyLoss()
+    optimizer = torch.optim.SGD(model.parameters(), lr = 0.01)
 
-model = Feedforward(28, 9, 3)
-criterion = torch.nn.CrossEntropyLoss()
-optimizer = torch.optim.SGD(model.parameters(), lr = 0.01)
-
-
-
-model.eval()
-y_pred = model(X_train)
-y_pred = torch.Tensor([list(x).index(x.max()) for x in y_pred])
-y_pred = 
-before_train = criterion(y_train, y_pred)
-print('Test loss before training' , before_train.item())
-
-
-
-model.train()
-epoch = 20
-for epoch in range(epoch):
-    optimizer.zero_grad()
-    # Forward pass
+    model.eval()
     y_pred = model(X_train)
-    # Compute Loss
-    loss = criterion(y_pred.squeeze(), y_train)
-   
-    print('Epoch {}: train loss: {}'.format(epoch, loss.item()))
-    # Backward pass
-    loss.backward()
-    optimizer.step()
+    before_train = criterion(y_pred, y_train)
+    print('Test loss before training' , before_train.item())
 
+    model.train()
+    epoch = 2000
+    for epoch in range(epoch):
+        optimizer.zero_grad()
+        # forward pass
+        y_pred = model(X_train)
+        loss = criterion(y_pred, y_train)
+       
+        print('Epoch {}: train loss: {}'.format(epoch, loss.item()))
+        # backward pass
+        loss.backward()
+        optimizer.step()
 
-model.eval()
-y_pred = model(X_test)
-after_train = criterion(y_pred.squeeze(), y_test) 
-print('Test loss after Training' , after_train.item())
+    model.eval()
+    y_pred = model(X_train)
+    after_train = criterion(y_pred, y_train) 
+    print('Training loss after training' , after_train.item())
 
 
 
