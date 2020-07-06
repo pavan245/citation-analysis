@@ -3,7 +3,7 @@
     "type": "citation_dataset_reader"
   },
   "train_data_path": "data/jsonl/train.jsonl",
-  "validation_data_path": "data/jsonl/test.jsonl",
+  "validation_data_path": "data/jsonl/dev.jsonl",
   "test_data_path": "data/jsonl/test.jsonl",
   "model": {
     "type": "basic_bilstm_classifier",
