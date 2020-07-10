@@ -10,7 +10,7 @@
     "text_field_embedder": {
       "token_embedders": {
         "tokens": {
-            "pretrained_file": "https://s3-us-west-2.amazonaws.com/allennlp/datasets/glove/glove.6B.100d.txt.gz",
+            "pretrained_file": "/mount/arbeitsdaten/studenten1/team-lab-nlp/mandavsi_rileyic/glove.6B.100d.txt.gz",
             "type": "embedding",
             "embedding_dim": 100,
             "trainable": false
@@ -26,7 +26,7 @@
     },
     "elmo": {
         "options_file": "https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/2x4096_512_2048cnn_2xhighway_5.5B/elmo_2x4096_512_2048cnn_2xhighway_5.5B_options.json",
-        "weight_file": "https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/2x4096_512_2048cnn_2xhighway_5.5B/elmo_2x4096_512_2048cnn_2xhighway_5.5B_weights.hdf5",
+        "weight_file": "/mount/arbeitsdaten/studenten1/team-lab-nlp/mandavsi_rileyic/elmo_2x4096_512_2048cnn_2xhighway_5.5B_weights.hdf5",
         "do_layer_norm": true,
         "dropout": 0.5,
         "num_output_representations": 1
@@ -51,6 +51,6 @@
       "lr": 0.001
     },
     "num_epochs": 2,
-    "cuda_device": -1
+    "cuda_device": 1
   }
 }
