@@ -36,10 +36,6 @@ class BiLstmClassifier(Model):
             self.label_f1_metrics[vocab.get_token_from_index(index=i, namespace="label")] = \
                 F1Measure(positive_label=i)
 
-        print('No of classes :: ', self.num_classes)
-        for i in range(self.num_classes):
-            print('Token :: ', i, ' -> ', vocab.get_token_from_index(index=i, namespace="label"))
-
         self.loss = torch.nn.CrossEntropyLoss()
 
         self.attention = Attention(encoder.get_output_dim())
@@ -48,7 +44,7 @@ class BiLstmClassifier(Model):
     def forward(self, tokens: Dict[str, torch.LongTensor],
                 label: torch.LongTensor) -> Dict[str, torch.LongTensor]:
 
-        global input_elmo
+        input_elmo = None
         elmo_tokens = tokens.pop("elmo", None)
 
         embedded_text = self.text_field_embedder(tokens)
