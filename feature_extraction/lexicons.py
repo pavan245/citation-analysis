@@ -69,6 +69,6 @@ ALL_LEXICONS = {
                          'corpus', 'uml', 'system', 'security', 'protocol', 'classification', 'data transform',
                          'memory', 'java', 'python', 'cluster', 'epoch', 'training', 'deadlock', 'technique'],
 
-    'CITATION': ['et al'],  # TODO (for Isaac) :: Write a complex regex for finding Citations in the text
+    'CITATION': ['et al']
 
 }
