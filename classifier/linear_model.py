@@ -189,6 +189,36 @@ class MultiClassPerceptron:
         return y_test
 
 
+    def get_class_scores(self, X_test: list):
+        """
+        This function takes testing instances as parameters and returns the probability for each
+         predicted label.
+
+        
+        :param X_test: list of test data instances
+        :return: list of predicted label probabilities
+        """
+
+        if X_test is None or len(X_test) <= 0:
+            raise Exception('Testing Data cannot be empty')
+
+        print('Predicting..... ')
+
+        y_test = []
+        labels = list(self.perceptron_dict.keys())
+        for test_inst in X_test:
+            perceptron_scores = []  # list for storing perceptron scores for each label
+            for label in labels:
+                perceptron_scores.append(self.perceptron_dict[label].score(test_inst.features))
+            # find the max score from the list of scores
+            #max_score = max(perceptron_scores)
+
+            #label_max_score = labels[perceptron_scores.index(max_score)]
+            y_test.append(perceptron_scores)
+
+        return y_test
+
+
 def get_sample_weights_with_features(theta_bias: float = 0.0, random_state: int = 42):
     """
     This function creates a dictionary with feature as a key and a random floating number (feature weight) as value.
