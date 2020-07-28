@@ -4,10 +4,13 @@ Date: July 5th, 2020
 """
 
 import torch
-from utils.nn_reader import read_csv_nn,
+import os
+os.chdir('/Users/iriley/code/citation-analysis')
+from utils.nn_reader import read_csv_nn
 from utils.nn_reader2 import read_csv_nn_dev
 from sklearn.metrics import confusion_matrix
 import pandas as pd
+import numpy as np
 
 class Feedforward(torch.nn.Module):
         """
@@ -26,7 +29,7 @@ class Feedforward(torch.nn.Module):
             self.fc2 = torch.nn.Linear(self.hidden_size, self.output_size)
             self.sigmoid = torch.nn.Sigmoid()
             self.softmax = torch.nn.Softmax(dim=1)
-        #
+
         def forward(self, x):
             """ Computes output from a given input x. """
             hidden = self.fc1(x)
@@ -62,29 +65,29 @@ if __name__=='__main__':
     batch_indices = list(zip(list(range(0,l,16))[:-1], list(range(16,l,16))))# + [(l-l%16,l)]
     batch_indices[-1] = (batch_indices[-1][0], l)
 
-    train model
+    # train model
     model.train()
     epochs = 50
     for epoch in range(epochs):
         batch = 0
-    	for a,b in batch_indices:
-	        optimizer.zero_grad()
-	        # forward pass
-	        y_pred = model(X_train[a:b])
-	        loss = criterion(y_pred, y_train[a:b])
-	        #
-	        print('Epoch {}, batch {}: train loss: {}'.format(epoch, batch, loss.item()))
-	        # backward pass
-	        loss.backward()
-	        optimizer.step()
-	        batch += 1
-	    y_pred = model(X_train)
-	    loss = criterion(y_pred, y_train)
-	    print('Epoch {}: train loss: {}'.format(epoch, loss.item()))
-	    # shuffle dataset
-	    p = torch.randperm(l)
-	    X_train = X_train[p]
-	    y_train = y_train[p]
+        for a,b in batch_indices:
+            optimizer.zero_grad()
+            # forward pass
+            y_pred = model(X_train[a:b])
+            loss = criterion(y_pred, y_train[a:b])
+            print('Epoch {}, batch {}: train loss: {}'.format(epoch, batch, loss.item()))
+            # backward pass
+            loss.backward()
+            optimizer.step()
+            batch += 1
+        # get loss following epoch
+        y_pred = model.forward(X_train)
+        loss = criterion(y_pred, y_train)
+        print('Epoch {}: train loss: {}'.format(epoch, loss.item()))
+        # shuffle dataset
+        p = torch.randperm(l)
+        X_train = X_train[p]
+        y_train = y_train[p]
 
     model.eval()
     y_pred = model.forward(X_train)
@@ -124,7 +127,7 @@ if __name__=='__main__':
     df['pr1']  = probs[:,1]
     df['pr2']  = probs[:,2]
     df['correct'] = df.preds==df.true
-    df.to_csv('/Users/iriley/code/machine_learning/lab2020/preds_ffnn.csv')
+    df.to_csv('/Users/iriley/code/machine_learning/lab2020/preds_ffnn.csv', index=False)
 
 
 
