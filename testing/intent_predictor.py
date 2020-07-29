@@ -24,16 +24,13 @@ class IntentClassificationPredictor(Predictor):
         return self._dataset_reader.text_to_instance(json_dict["citation_text"], json_dict["intent"])
 
 
-def make_predictions(model: Model, dataset_reader: DatasetReader, file_path: str) -> Tuple[
-    List[Dict[str, float]], list]:
+def make_predictions(model: Model, dataset_reader: DatasetReader, file_path: str) -> Tuple[List[Dict[str, float]], list]:
     """Make predictions using the given model and dataset reader"""
 
     predictor = IntentClassificationPredictor(model, dataset_reader)
 
     prediction_list = []
     true_list = []
-
-    vocab = model.vocab
 
     jsonl_reader = DataReaderJsonLines(file_path)
     for citation in jsonl_reader.read():
@@ -54,4 +51,4 @@ def load_model_and_predict_test_data(saved_model_dir: str):
 
     y_pred, y_true = make_predictions(model_archive.model, citation_dataset_reader, test_file_path)
 
-    retun y_pred,y_true
+    return y_pred, y_true

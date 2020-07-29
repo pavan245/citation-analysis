@@ -1,4 +1,6 @@
 import utils.constants as const
+from sklearn.metrics import confusion_matrix
+import matplotlib.pyplot as plt
 
 
 def f1_score(y_true, y_pred, labels, average):
@@ -161,6 +163,34 @@ def calculate_f1_score(precision, recall):
 
     """
     return 2 * (precision * recall) / (precision + recall)
+
+
+def get_confusion_matrix(y_true, y_pred):
+    """
+    takes predicted labels and true labels as parameters and returns Confusion Matrix
+    :param y_true: True labels
+    :param y_pred: Predicted labels
+    :return: returns Confusion Matrix
+    """
+    return confusion_matrix(y_true, y_pred, const.CLASS_LABELS_LIST)
+
+
+def plot_confusion_matrix(confusion_mat, classifier_name):
+    """
+    Takes Confusion Matrix as a parameter and plots the matrix using matplotlib
+    :param confusion_mat: Confusion Matrix
+    :param classifier_name: Classifier Name to show it on the Top
+    """
+    fig, ax = plt.subplots(2, 2)
+    ax.matshow(confusion_mat, cmap='Greens')
+    for x in (0, 2):
+        for y in (0, 2):
+            ax.text(x, y, confusion_mat[y, x])
+    ax.set_xlabel('Predicted')
+    ax.set_ylabel('True/Gold')
+    ax.set_xticklabels([''] + const.CLASS_LABELS_LIST)
+    ax.set_yticklabels([''] + const.CLASS_LABELS_LIST)
+    ax.set_title(classifier_name)
 
 
 class Result:
