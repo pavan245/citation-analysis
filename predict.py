@@ -9,4 +9,4 @@ confusion_matrix = metrics.get_confusion_matrix(y_true, y_pred)
 
 print(confusion_matrix)
 
-# metrics.plot_confusion_matrix(confusion_matrix, "BiLSTM Classifier + Attention with ELMo")
+metrics.plot_confusion_matrix(confusion_matrix, "BiLSTM Classifier + Attention with ELMo")
