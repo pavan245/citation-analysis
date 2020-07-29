@@ -48,10 +48,10 @@
   },
   "trainer": {
     "optimizer": {
-      "type": "adam",
+      "type": "adagrad",
       "lr": 0.001
     },
-    "num_epochs": 2,
-    "cuda_device": 1
+    "num_epochs": 20,
+    "cuda_device": 3
   }
 }
