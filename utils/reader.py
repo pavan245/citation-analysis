@@ -75,8 +75,9 @@ class DataReaderJsonLines:
         This method opens the file, reads every line and returns a collection of lines
         :return: collection of Citation Objects, with the required data
         """
-        for line in jsonlines.open(self.file_path):
-            yield read_json_line(line)
+        with jsonlines.open(self.file_path) as jl_reader:
+            for line in jl_reader:
+                yield read_json_line(line)
 
 
 def read_json_line(line):
