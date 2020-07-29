@@ -190,7 +190,7 @@ def plot_confusion_matrix(confusion_mat, classifier_name, plot_file_name):
         plt.xticks(tick_marks, target_names, rotation=45)
         plt.yticks(tick_marks, target_names)
 
-    thresh = confusion_mat.max() / confusion_mat.max() / 2
+    thresh = confusion_mat.max() / 2
     for i, j in itertools.product(range(confusion_mat.shape[0]), range(confusion_mat.shape[1])):
         plt.text(j, i, "{:,}".format(confusion_mat[i, j]),
                  horizontalalignment="center",
