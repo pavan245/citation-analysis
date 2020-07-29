@@ -41,8 +41,9 @@ def make_predictions(model: Model, dataset_reader: DatasetReader, file_path: str
         i += 1
         true_list.append(citation.intent)
         output = predictor.predict(citation.text, citation.intent)
-        prediction_list.append({vocab.get_token_from_index(label_id, 'labels'): prob
-                                for label_id, prob in enumerate(output['probs'])})
+        prediction_list.append(output['prediction'])
+        # prediction_list.append({vocab.get_token_from_index(label_id, 'labels'): prob
+        #                         for label_id, prob in enumerate(output['probabilities'])})
         if i == 10:
             break
 
@@ -59,4 +60,5 @@ def load_model_and_run_predictions(saved_model_dir: str):
 
     y_pred, y_true = make_predictions(model_archive.model, citation_dataset_reader, test_file_path)
 
-    print(y_pred)
+    print('Predictions ', y_pred)
+    print('True Labels ', y_true)

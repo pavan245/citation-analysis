@@ -104,10 +104,10 @@ class BiLstmClassifier(Model):
         output_dict['probabilities'] = class_probabilities
         output_dict['positive_label'] = label
         output_dict['prediction'] = label
-        citation_text = []
-        for batch_text in output_dict['tokens']:
-            citation_text.append([self.vocab.get_token_from_index(token_id.item()) for token_id in batch_text])
-        output_dict['tokens'] = citation_text
+        # citation_text = []
+        # for batch_text in output_dict['tokens']:
+        #     citation_text.append([self.vocab.get_token_from_index(token_id.item()) for token_id in batch_text])
+        # output_dict['tokens'] = citation_text
 
         return output_dict
 
