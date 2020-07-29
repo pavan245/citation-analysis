@@ -172,7 +172,7 @@ def get_confusion_matrix(y_true, y_pred):
     :param y_pred: Predicted labels
     :return: returns Confusion Matrix
     """
-    return confusion_matrix(y_true, y_pred, const.CLASS_LABELS_LIST)
+    return confusion_matrix(y_true, y_pred, labels=const.CLASS_LABELS_LIST)
 
 
 def plot_confusion_matrix(confusion_mat, classifier_name):
@@ -182,6 +182,7 @@ def plot_confusion_matrix(confusion_mat, classifier_name):
     :param classifier_name: Classifier Name to show it on the Top
     """
     fig, ax = plt.subplots(2, 2)
+    plt.show()
     ax.matshow(confusion_mat, cmap='Greens')
     for x in (0, 2):
         for y in (0, 2):
