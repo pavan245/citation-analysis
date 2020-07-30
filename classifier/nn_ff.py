@@ -4,8 +4,10 @@ Date: July 5th, 2020
 """
 
 import torch
-import os
-os.chdir('/Users/iriley/code/citation-analysis')
+#import os
+#os.chdir('/Users/iriley/code/citation-analysis')
+import sys
+sys.path.append('/Users/iriley/code/citation-analysis')
 from utils.nn_reader import read_csv_nn
 from utils.nn_reader2 import read_csv_nn_dev
 from sklearn.metrics import confusion_matrix
@@ -47,10 +49,31 @@ if __name__=='__main__':
 
     X_train, y_train, X_test = read_csv_nn()
 
-    X_train = torch.FloatTensor(X_train)
+    # balance classes
+    yclass = np.array([(x[1]==1)+2*(x[2]==1) for x in y_train])
+    is0 = yclass==0
+    is1 = yclass==1
+    is2 = yclass==2
+    X0 = torch.FloatTensor(X_train[is0])
+    X1 = torch.FloatTensor(X_train[is1])
+    X2 = torch.FloatTensor(X_train[is2])
+    y0 = torch.LongTensor(np.zeros((sum(is0),)))
+    y1 = torch.LongTensor(np.ones((sum(is1),)))
+    y2 = torch.LongTensor(2*np.ones((sum(is2),)))
+    l0 = sum(is0)
+    l1 = sum(is1)
+    l2 = sum(is2)
+    p0 = torch.randperm(l0)
+    p1 = torch.randperm(l1)
+    p2 = torch.randperm(l2)
+    p = torch.randperm(3000)
+    X_train = torch.cat((X0[p0][:1000], X1[p1][:1000], X2[p2][:1000]))[p]
+    y_train = torch.cat((y0[:1000], y1[:1000], y2[:1000]))[p]
+
+    #X_train = torch.FloatTensor(X_train)
     X_test = torch.FloatTensor(X_test)
-    y_train_ = torch.FloatTensor(y_train)
-    y_train = torch.max(torch.FloatTensor(y_train_),1)[1]
+    #y_train_ = torch.FloatTensor(y_train)
+    #y_train = torch.max(torch.FloatTensor(y_train_),1)[1]
 
     model = Feedforward(28, 9, 3)
     criterion = torch.nn.CrossEntropyLoss()
@@ -61,13 +84,13 @@ if __name__=='__main__':
     before_train = criterion(y_pred, y_train)
     print('Test loss before training' , before_train.item())
     
-    l = X_train.shape[0]
+    l = 3000 # X_train.shape[0]
     batch_indices = list(zip(list(range(0,l,16))[:-1], list(range(16,l,16))))# + [(l-l%16,l)]
     batch_indices[-1] = (batch_indices[-1][0], l)
 
     # train model
     model.train()
-    epochs = 50
+    epochs = 100
     for epoch in range(epochs):
         batch = 0
         for a,b in batch_indices:
@@ -85,9 +108,15 @@ if __name__=='__main__':
         loss = criterion(y_pred, y_train)
         print('Epoch {}: train loss: {}'.format(epoch, loss.item()))
         # shuffle dataset
-        p = torch.randperm(l)
-        X_train = X_train[p]
-        y_train = y_train[p]
+        #p = torch.randperm(l)
+        #X_train = X_train[p]
+        #y_train = y_train[p]
+        p0 = torch.randperm(l0)
+        p1 = torch.randperm(l1)
+        p2 = torch.randperm(l2)
+        p = torch.randperm(3000)
+        X_train = torch.cat((X0[p0][:1000], X1[p1][:1000], X2[p2][:1000]))[p]
+        y_train = torch.cat((y0[:1000], y1[:1000], y2[:1000]))[p]
 
     model.eval()
     y_pred = model.forward(X_train)
@@ -102,32 +131,32 @@ if __name__=='__main__':
     #y_train = torch.max(torch.FloatTensor(y_train_),1)[1]
     
     # get dev set to make predictions
-    X_dev, y_dev = read_csv_nn_dev()
-    X_dev = torch.FloatTensor(X_dev)
-    y_dev_pre = torch.FloatTensor(y_dev)
-    y_dev = torch.max(torch.FloatTensor(y_dev_pre),1)[1]
+    #X_dev, y_dev = read_csv_nn_dev()
+    #X_dev = torch.FloatTensor(X_dev)
+    #y_dev_pre = torch.FloatTensor(y_dev)
+    #y_dev = torch.max(torch.FloatTensor(y_dev_pre),1)[1]
 
     # post-process to get predictions & get back to np format
-    y_pred = model.forward(X_dev)
+    y_pred = model.forward(X_test)
     y_pred_np = y_pred.detach().numpy()
     predmax = np.amax(y_pred_np, axis=1)
     preds = 1*(y_pred_np[:,1]==predmax) + 2*(y_pred_np[:,2]==predmax)
-    y_dev_ = y_dev.detach().numpy()
+    #y_dev_ = y_dev.detach().numpy()
     
     # create confusion matrix
-    cm = confusion_matrix(y_dev_, preds)
-    print(cm)
+    #cm = confusion_matrix(y_dev_, preds)
+    #print(cm)
 
     # save predictions
     df = pd.DataFrame()
     df['preds'] = preds
-    df['true']  = y_dev_
+    #df['true']  = y_dev_
     probs = y_pred.detach().numpy()
     df['pr0']  = probs[:,0]
     df['pr1']  = probs[:,1]
     df['pr2']  = probs[:,2]
-    df['correct'] = df.preds==df.true
-    df.to_csv('/Users/iriley/code/machine_learning/lab2020/preds_ffnn.csv', index=False)
+    #df['correct'] = df.preds==df.true
+    df.to_csv('/Users/iriley/code/machine_learning/lab2020/y_pred_model2.csv', index=False)
 
 
 
