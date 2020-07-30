@@ -34,3 +34,4 @@ REGEX_CONSTANTS = {
 }
 
 CLASS_LABELS = {"background": 0, "method": 1, "result": 2}
+CLASS_LABELS_LIST = ['background', 'method', 'result']

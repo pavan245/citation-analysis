@@ -1,4 +1,8 @@
 import utils.constants as const
+from sklearn.metrics import confusion_matrix
+import matplotlib.pyplot as plt
+import numpy as np
+import itertools
 
 
 def f1_score(y_true, y_pred, labels, average):
@@ -161,6 +165,41 @@ def calculate_f1_score(precision, recall):
 
     """
     return 2 * (precision * recall) / (precision + recall)
+
+
+def get_confusion_matrix(y_true, y_pred):
+    """
+    takes predicted labels and true labels as parameters and returns Confusion Matrix
+    :param y_true: True labels
+    :param y_pred: Predicted labels
+    :return: returns Confusion Matrix
+    """
+    return confusion_matrix(y_true, y_pred, labels=const.CLASS_LABELS_LIST)
+
+
+def plot_confusion_matrix(confusion_mat, classifier_name, plot_file_name):
+
+    plt.figure(figsize=(8, 6))
+    plt.imshow(confusion_mat, interpolation='nearest', cmap=plt.get_cmap('Blues'))
+    plt.title(classifier_name)
+    plt.colorbar()
+
+    target_names = const.CLASS_LABELS_LIST
+    if target_names is not None:
+        tick_marks = np.arange(len(target_names))
+        plt.xticks(tick_marks, target_names, rotation=45)
+        plt.yticks(tick_marks, target_names)
+
+    thresh = confusion_mat.max() / 2
+    for i, j in itertools.product(range(confusion_mat.shape[0]), range(confusion_mat.shape[1])):
+        plt.text(j, i, "{:,}".format(confusion_mat[i, j]),
+                 horizontalalignment="center",
+                 color="white" if confusion_mat[i, j] > thresh else "black")
+
+    plt.tight_layout(1.5)
+    plt.ylabel('True/Gold')
+    plt.xlabel('Predicted')
+    plt.savefig(plot_file_name)
 
 
 class Result:
