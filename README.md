@@ -72,4 +72,4 @@ eval.metrics.f1_score(y_true, y_pred, labels, average)
 [Link](/blob/master/eval/metrics.py) to the metrics source code.
 
 ### Results
-![Confusion Matrix Plot](/plots/perceptron/confusion_matrix_plot.png?raw=true)
+<img src="/plots/perceptron/confusion_matrix_plot.png?raw=true" width="400" height = "300" alt = "Confusion Matrix Plot">Confusion Matrix Plot</img>
