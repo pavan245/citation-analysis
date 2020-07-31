@@ -45,13 +45,13 @@ class MultiClassPerceptron:
 ```
 Since we have 3 different classes for Classification, we create a Perceptron object for each class. Each Perceptron has score and update functions. During training, for a set of input features it takes the score from the Perceptron for each label and assigns the label with max score(for all the data instances). It compares the assigned label with the true label and decides whether or not to update the weights (with some learning rate).
 
-Check the source [code](/blob/master/classifier/linear_model.py) for more details on the implementation of Perceptron Classifier.
+Check the source [code](/classifier/linear_model.py) for more details on the implementation of Perceptron Classifier.
 
 #### Running the Model
 
 > `(citation-env) [user@server citation-analysis]$ python -m testing.model_testing`
   
-[link](/blob/master/testing/model_testing.py) to the source code. All the Hyperparameters can be modified to experiment with.
+[link](/testing/model_testing.py) to the source code. All the Hyperparameters can be modified to experiment with.
   
 **Evaluation**  
 we used ***f1_score*** metric for evaluation of our baseline classifier.
@@ -72,4 +72,4 @@ eval.metrics.f1_score(y_true, y_pred, labels, average)
 [Link](/blob/master/eval/metrics.py) to the metrics source code.
 
 ### Results
-![Confusion Matrix Plot](/blob/master/plots/perceptron/confusion_matrix_plot.png?raw=true)
+![Confusion Matrix Plot](/plots/perceptron/confusion_matrix_plot.png?raw=true)
