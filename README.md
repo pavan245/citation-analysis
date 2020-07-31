@@ -10,7 +10,7 @@ We implemented 3 different classifiers and evaluated the results:
  - Feedforward Neural Network Classifier (using [PyTorch](https://pytorch.org/))
  - BiLSTM + Attention with ELMo Embeddings (using [AllenNLP](https://allennlp.org/) library)
 
-This README documentation focuses on running the code base, training the models and predictions. For more information about our project work and detailed error analysis, check [this](https://www.overleaf.com/project/5f1b0e8a6d0fb80001ceb5eb) report. 
+This README documentation focuses on running the code base, training the models and predictions. For more information about our project work and detailed error analysis, check [this](https://www.overleaf.com/project/5f1b0e8a6d0fb80001ceb5eb) report. <br/>
 For more information on the Citation Intent Classification in Scientific Publications, follow this [link](https://arxiv.org/pdf/1904.01608.pdf) to the original published paper and the [GitHub repo](https://github.com/allenai/scicite)
 
 ## Environment & Setup
@@ -34,14 +34,14 @@ We have 3 different intents/classes in the dataset:
 We implemented [Perceptron](https://en.wikipedia.org/wiki/Perceptron) as a baseline classifier, from scratch (including evaluation). Perceptron is an algorithm for supervised learning of classification. It's a Linear and a Binary Classifier, which means it can only decide whether or not an input feature belongs to some specific class and also it's only capable of learning linearly separable patterns.
 ```python
 class Perceptron:
-	def __init__(self, label: str, weights: dict, theta_bias: float):
-	def score(self, features: list):
-	def update_weights(self, features: list, learning_rate: float, penalize: bool, reward: bool):
+  def __init__(self, label: str, weights: dict, theta_bias: float):
+  def score(self, features: list):
+  def update_weights(self, features: list, learning_rate: float, penalize: bool, reward: bool):
 
 class MultiClassPerceptron:
-	def __init__(self, epochs: int = 5000, learning_rate: float = 1, random_state: int = 42)
-	def fit(self, X_train: list, labels: list)
-	def predict(self, X_test: list)
+  def __init__(self, epochs: int = 5000, learning_rate: float = 1, random_state: int = 42)
+  def fit(self, X_train: list, labels: list)
+  def predict(self, X_test: list)
 ```
 Since we have 3 different classes for Classification, we create a Perceptron object for each class. Each Perceptron has score and update functions. During training, for a set of input features it takes the score from the Perceptron for each label and assigns the label with max score(for all the data instances). It compares the assigned label with the true label and decides whether or not to update the weights (with some learning rate).
 
@@ -72,3 +72,4 @@ eval.metrics.f1_score(y_true, y_pred, labels, average)
 [Link](/blob/master/eval/metrics.py) to the metrics source code.
 
 ### Results
+![Confusion Matrix Plot](/blob/master/plots/perceptron/confusion_matrix_plot.png?raw=true)
