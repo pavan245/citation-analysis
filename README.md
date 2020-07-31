@@ -69,7 +69,7 @@ eval.metrics.f1_score(y_true, y_pred, labels, average)
 **labels** : list of labels/classes    
 **average**: string - [None, 'micro', 'macro'] If None, the scores for each class are returned.
 
-[Link](/blob/master/eval/metrics.py) to the metrics source code.
+[Link](/eval/metrics.py) to the metrics source code.
 
 ### Results
-<img src="/plots/perceptron/confusion_matrix_plot.png?raw=true" width="400" height = "300" alt = "Confusion Matrix Plot">Confusion Matrix Plot</img>
+<img src="/plots/perceptron/confusion_matrix_plot.png?raw=true" width="400" height = "300" alt = "Confusion Matrix Plot" />
