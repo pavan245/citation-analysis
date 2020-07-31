@@ -170,6 +170,9 @@ def calculate_f1_score(precision, recall):
 def get_confusion_matrix(y_true, y_pred):
     """
     takes predicted labels and true labels as parameters and returns Confusion Matrix
+
+    - uses sklearn metric s functions
+
     :param y_true: True labels
     :param y_pred: Predicted labels
     :return: returns Confusion Matrix
@@ -178,6 +181,14 @@ def get_confusion_matrix(y_true, y_pred):
 
 
 def plot_confusion_matrix(confusion_mat, classifier_name, plot_file_name):
+    """
+    Saves the confusion matrix plot with the specified file name
+
+    :param confusion_mat: takes Confusion Matrix as an argument
+    :param classifier_name: Classifier name
+    :param plot_file_name: file name (with path) to save
+
+    """
 
     plt.figure(figsize=(8, 6))
     plt.imshow(confusion_mat, interpolation='nearest', cmap=plt.get_cmap('Blues'))
