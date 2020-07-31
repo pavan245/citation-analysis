@@ -73,3 +73,11 @@ eval.metrics.f1_score(y_true, y_pred, labels, average)
 
 ### Results
 <img src="/plots/perceptron/confusion_matrix_plot.png?raw=true" width="400" height = "300" alt = "Confusion Matrix Plot" />
+
+### 2) Feedforward Neural Network (using PyTorch)
+
+TODO
+
+### 3) BiLSTM + Attention with ELMo (AllenNLP Model)
+
+TODO
