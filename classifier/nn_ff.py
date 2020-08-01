@@ -1,165 +1,127 @@
 """
 Simple feed-forward neural network in PyTorch for baseline results on Scicite data.
-Date: July 5th, 2020
+Created: July 5th, 2020
 """
 
 import torch
-#import os
-#os.chdir('/Users/iriley/code/citation-analysis')
-import sys
-sys.path.append('/Users/iriley/code/citation-analysis')
 from utils.nn_reader import read_csv_nn
-from utils.nn_reader2 import read_csv_nn_dev
-from sklearn.metrics import confusion_matrix
-import pandas as pd
 import numpy as np
 
-class Feedforward(torch.nn.Module):
-        """
-        Creates and trains a basic feedforward neural network.
-        """
-        #
-        def __init__(self, input_size, hidden_size, output_size):
-            """ Sets up all basic elements of NN. """
-            super(Feedforward, self).__init__()
-            self.input_size = input_size
-            self.hidden_size  = hidden_size
-            self.output_size = output_size
-            self.fc1 = torch.nn.Linear(self.input_size, self.hidden_size)
-            #self.relu = torch.nn.ReLU()
-            self.tanh = torch.nn.Tanh()
-            self.fc2 = torch.nn.Linear(self.hidden_size, self.output_size)
-            self.sigmoid = torch.nn.Sigmoid()
-            self.softmax = torch.nn.Softmax(dim=1)
 
-        def forward(self, x):
-            """ Computes output from a given input x. """
-            hidden = self.fc1(x)
-            #relu = self.relu(hidden)
-            tanh = self.tanh(hidden)
-            #output = self.fc2(relu)
-            output = self.fc2(tanh)
-            output = self.softmax(output)
-            return output
+class FeedForward(torch.nn.Module):
+    """
+    Creates and trains a basic feedforward neural network.
+    """
 
+    def __init__(self, input_size, hidden_size, output_size):
+        """ Sets up all basic elements of NN. """
+        super(FeedForward, self).__init__()
+        self.input_size = input_size
+        self.hidden_size = hidden_size
+        self.output_size = output_size
+        self.fc1 = torch.nn.Linear(self.input_size, self.hidden_size)
+        self.tanh = torch.nn.Tanh()
+        self.fc2 = torch.nn.Linear(self.hidden_size, self.output_size)
+        self.sigmoid = torch.nn.Sigmoid()
+        self.softmax = torch.nn.Softmax(dim=1)
 
+    def forward(self, x):
+        """ Computes output from a given input x. """
+        hidden = self.fc1(x)
+        tanh = self.tanh(hidden)
+        output = self.fc2(tanh)
+        output = self.softmax(output)
+        return output
 
-if __name__=='__main__':
-    """ Reads in the data, then trains and evaluates the neural network. """
+    def read_data(self):
+        """" Reads in training and test data and converts it to proper format. """
+        self.X_train_, self.y_train_, self.X_test_ = read_csv_nn()
+        yclass = np.array([(x[1] == 1) + 2 * (x[2] == 1) for x in self.y_train_])
+        is0 = yclass == 0
+        is1 = yclass == 1
+        is2 = yclass == 2
+        self.X0 = torch.FloatTensor(self.X_train_[is0])
+        self.X1 = torch.FloatTensor(self.X_train_[is1])
+        self.X2 = torch.FloatTensor(self.X_train_[is2])
+        self.y0 = torch.LongTensor(np.zeros((sum(is0),)))
+        self.y1 = torch.LongTensor(np.ones((sum(is1),)))
+        self.y2 = torch.LongTensor(2 * np.ones((sum(is2),)))
+        self.l0 = sum(is0)
+        self.l1 = sum(is1)
+        self.l2 = sum(is2)
 
-    X_train, y_train, X_test = read_csv_nn()
+    def fit(self, epochs=100, batch_size=16, lr=0.01, samples0=1000, samples1=1000, samples2=1000):
+        """ Trains model, using cross entropy loss and SGD optimizer. """
+        self.criterion = torch.nn.CrossEntropyLoss()
+        self.optimizer = torch.optim.SGD(self.parameters(), lr)
+        self.samples0 = samples0
+        self.samples1 = samples1
+        self.samples2 = samples2
 
-    # balance classes
-    yclass = np.array([(x[1]==1)+2*(x[2]==1) for x in y_train])
-    is0 = yclass==0
-    is1 = yclass==1
-    is2 = yclass==2
-    X0 = torch.FloatTensor(X_train[is0])
-    X1 = torch.FloatTensor(X_train[is1])
-    X2 = torch.FloatTensor(X_train[is2])
-    y0 = torch.LongTensor(np.zeros((sum(is0),)))
-    y1 = torch.LongTensor(np.ones((sum(is1),)))
-    y2 = torch.LongTensor(2*np.ones((sum(is2),)))
-    l0 = sum(is0)
-    l1 = sum(is1)
-    l2 = sum(is2)
-    p0 = torch.randperm(l0)
-    p1 = torch.randperm(l1)
-    p2 = torch.randperm(l2)
-    p = torch.randperm(3000)
-    X_train = torch.cat((X0[p0][:1000], X1[p1][:1000], X2[p2][:1000]))[p]
-    y_train = torch.cat((y0[:1000], y1[:1000], y2[:1000]))[p]
+        model.eval()  # put into eval mode
 
-    #X_train = torch.FloatTensor(X_train)
-    X_test = torch.FloatTensor(X_test)
-    #y_train_ = torch.FloatTensor(y_train)
-    #y_train = torch.max(torch.FloatTensor(y_train_),1)[1]
+        # initialize training data
+        self.shuffle()
+        y_pred = self.forward(self.X_train)
+        before_train = self.criterion(y_pred, self.y_train)
+        print('Test loss before training', before_train.item())
 
-    model = Feedforward(28, 9, 3)
-    criterion = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.SGD(model.parameters(), lr = 0.01)
+        # setup for batches
+        l = self.samples0 + self.samples1 + self.samples2  # total length
+        batch_indices = list(zip(list(range(0, l, batch_size))[:-1], list(range(16, l, batch_size))))
+        batch_indices[-1] = (batch_indices[-1][0], l)
 
-    model.eval()
-    y_pred = model(X_train)
-    before_train = criterion(y_pred, y_train)
-    print('Test loss before training' , before_train.item())
-    
-    l = 3000 # X_train.shape[0]
-    batch_indices = list(zip(list(range(0,l,16))[:-1], list(range(16,l,16))))# + [(l-l%16,l)]
-    batch_indices[-1] = (batch_indices[-1][0], l)
+        # train model
+        self.train()  # put into training mode
+        for epoch in range(epochs):
+            batch = 0
+            for a, b in batch_indices:
+                self.optimizer.zero_grad()
 
-    # train model
-    model.train()
-    epochs = 100
-    for epoch in range(epochs):
-        batch = 0
-        for a,b in batch_indices:
-            optimizer.zero_grad()
-            # forward pass
-            y_pred = model(X_train[a:b])
-            loss = criterion(y_pred, y_train[a:b])
-            print('Epoch {}, batch {}: train loss: {}'.format(epoch, batch, loss.item()))
-            # backward pass
-            loss.backward()
-            optimizer.step()
-            batch += 1
-        # get loss following epoch
-        y_pred = model.forward(X_train)
-        loss = criterion(y_pred, y_train)
-        print('Epoch {}: train loss: {}'.format(epoch, loss.item()))
-        # shuffle dataset
-        #p = torch.randperm(l)
-        #X_train = X_train[p]
-        #y_train = y_train[p]
-        p0 = torch.randperm(l0)
-        p1 = torch.randperm(l1)
-        p2 = torch.randperm(l2)
-        p = torch.randperm(3000)
-        X_train = torch.cat((X0[p0][:1000], X1[p1][:1000], X2[p2][:1000]))[p]
-        y_train = torch.cat((y0[:1000], y1[:1000], y2[:1000]))[p]
+                # forward pass
+                y_pred = model(X_train[a:b])
+                loss = self.criterion(y_pred, self.y_train[a:b])
 
-    model.eval()
-    y_pred = model.forward(X_train)
-    after_train = criterion(y_pred, y_train) 
-    print('Training loss after training' , after_train.item())
+                # backward pass
+                loss.backward()
+                self.optimizer.step()
+                batch += 1
 
-    ## reload the data to get original order
-    #X_train, y_train, X_test = read_csv_nn()
-    #X_train = torch.FloatTensor(X_train)
-    #X_test = torch.FloatTensor(X_test)
-    #y_train_ = torch.FloatTensor(y_train)
-    #y_train = torch.max(torch.FloatTensor(y_train_),1)[1]
-    
-    # get dev set to make predictions
-    #X_dev, y_dev = read_csv_nn_dev()
-    #X_dev = torch.FloatTensor(X_dev)
-    #y_dev_pre = torch.FloatTensor(y_dev)
-    #y_dev = torch.max(torch.FloatTensor(y_dev_pre),1)[1]
+            # get loss following epoch
+            y_pred = self.forward(self.X_train)
+            loss = self.criterion(y_pred, self.y_train)
+            print('Epoch {}: train loss: {}'.format(epoch, loss.item()))
 
-    # post-process to get predictions & get back to np format
-    y_pred = model.forward(X_test)
-    y_pred_np = y_pred.detach().numpy()
-    predmax = np.amax(y_pred_np, axis=1)
-    preds = 1*(y_pred_np[:,1]==predmax) + 2*(y_pred_np[:,2]==predmax)
-    #y_dev_ = y_dev.detach().numpy()
-    
-    # create confusion matrix
-    #cm = confusion_matrix(y_dev_, preds)
-    #print(cm)
+            # shuffle dataset
+            self.shuffle()
 
-    # save predictions
-    df = pd.DataFrame()
-    df['preds'] = preds
-    #df['true']  = y_dev_
-    probs = y_pred.detach().numpy()
-    df['pr0']  = probs[:,0]
-    df['pr1']  = probs[:,1]
-    df['pr2']  = probs[:,2]
-    #df['correct'] = df.preds==df.true
-    df.to_csv('/Users/iriley/code/machine_learning/lab2020/y_pred_model2.csv', index=False)
+        # display final loss
+        self.eval()  # back to eval mode
+        y_pred = self.forward(self.X_train)
+        after_train = self.criterion(y_pred, self.y_train)
+        print('Training loss after training', after_train.item())
 
+    def predict(self):
+        """ Generates predictions from model, using test data. """
 
+        # post-process to get predictions & get back to np format
+        y_pred = self.forward(self.X_test)
+        y_pred_np = y_pred.detach().numpy()
+        predmax = np.amax(y_pred_np, axis=1)
+        self.preds = 1 * (y_pred_np[:, 1] == predmax) + 2 * (y_pred_np[:, 2] == predmax)
+        self.probs = y_pred.detach().numpy()
 
+    def shuffle(self):
+        """ Samples and shuffles training data. """
 
+        # create permutations for shuffling
+        p0 = torch.randperm(self.l0)
+        p1 = torch.randperm(self.l1)
+        p2 = torch.randperm(self.l2)
+        n = self.l0 + self.l1 + self.l2
+        p = torch.randperm(n)
 
-
+        # sample and shuffle data
+        self.X_train = \
+        torch.cat((self.X0[p0][:self.samples0], self.X1[p1][:self.samples1], self.X2[p2][:self.samples2]))[p]
+        self.y_train = torch.cat((self.y0[:self.samples0], self.y1[:self.samples1], self.y2[:self.samples2]))[p]
