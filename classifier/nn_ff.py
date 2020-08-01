@@ -58,7 +58,7 @@ class FeedForward(torch.nn.Module):
         self.samples1 = samples1
         self.samples2 = samples2
 
-        model.eval()  # put into eval mode
+        self.eval()  # put into eval mode
 
         # initialize training data
         self.shuffle()
