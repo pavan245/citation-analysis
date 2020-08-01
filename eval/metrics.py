@@ -212,6 +212,8 @@ def plot_confusion_matrix(confusion_mat, classifier_name, plot_file_name):
     plt.xlabel('Predicted')
     plt.savefig(plot_file_name)
 
+    print('Confusion Matrix Plot saved to :: ', plot_file_name)
+
 
 class Result:
     """
