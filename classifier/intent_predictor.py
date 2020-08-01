@@ -32,7 +32,7 @@ class IntentClassificationPredictor(Predictor):
         :param intent: target intent of the data point
         :return: returns output dictionary from Model's forward method
         """
-        return self.predict_json({"citation_text": text, "intent": intent})
+        return self.predict_json({"string": text, "label": intent})
 
     @overrides
     def _json_to_instance(self, json_dict: JsonDict) -> Instance:
@@ -45,7 +45,7 @@ class IntentClassificationPredictor(Predictor):
         :param json_dict: json dictionary data with text and intent label
         :return: returns AllenNLP Instance with tokens(ELMo) and target label
         """
-        return self._dataset_reader.text_to_instance(json_dict["citation_text"], json_dict["intent"])
+        return self._dataset_reader.text_to_instance(json_dict["string"], json_dict["label"])
 
 
 def make_predictions(model: Model, dataset_reader: DatasetReader, dataset_file_path: str) -> Tuple[list, list]:
