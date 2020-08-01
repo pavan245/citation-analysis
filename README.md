@@ -10,11 +10,52 @@ We implemented 3 classifiers and evaluated on test dataset:
  - Feedforward Neural Network Classifier (using [PyTorch](https://pytorch.org/))
  - BiLSTM + Attention with ELMo Embeddings (using [AllenNLP](https://allennlp.org/) library)
 
-This README documentation focuses on running the code base, training the models and predictions. For more information about our project work, model results and detailed error analysis, check [this](https://www.overleaf.com/project/5f1b0e8a6d0fb80001ceb5eb) report. <br/>
+This README documentation focuses on running the code base, training the models and predictions. For more information about our project work, model results and detailed error analysis, check [this](https://www.overleaf.com/project/5f1b0e8a6d0fb80001ceb5eb) report. Slides from the mid-term presentation are available [here](/presentation.pdf).<br/>
 For more information on the Citation Intent Classification in Scientific Publications, follow this [link](https://arxiv.org/pdf/1904.01608.pdf) to the original published paper and their [GitHub repo](https://github.com/allenai/scicite)
 
 ## Environment & Setup
-TODO
+It's recommended to use **Python 3.5 or greater**. Now we can install and create a Virtual Environment to run this project.
+
+#### Installing virtualenv
+```shell
+python3 -m pip install --user virtualenv
+```
+#### Creating a virtual environment
+**venv** (for Python 3) allows us to manage separate package installations for different projects.
+```shell
+python3 -m venv citation-env
+```
+#### Activating the virtual environment
+Before we start installing or using packages in the virtual environment we need to _activate_ it.
+```shell
+source citation-env/bin/activate
+```
+#### Leaving the virtual environment
+To leave the virtual environment, simply run:
+```shell
+deactivate
+```
+
+After activating the Virtual Environment, the console should look like this:
+```shell
+(citation-env) [user@server ~]$ 
+```
+#### Cloning the Repository
+```shell
+git clone https://github.com/yelircaasi/citation-analysis.git
+```
+Now change the current working directory to the project root folder (`> cd citation-analysis`)
+**Note:** Stay in the Project root folder while running all the experiments.
+
+#### Installing Pacakages
+Now we can install all the packages required to run this project, available in [requirements.txt](/requiements.txt) file.
+```shell
+(citation-env) [user@server citation-analysis]$ pip install -r requirements.txt
+```
+#### Environment Variable for Saved Models Path
+```shell
+export SAVED_MODELS_PATH=/mount/arbeitsdaten/studenten1/team-lab-nlp/mandavsi_rileyic/saved_models
+```
 
 ## Data
 We have 3 different intents/classes in the dataset:
@@ -49,9 +90,11 @@ Since we have 3 different classes for Classification, we create a Perceptron obj
 Check the source [code](/classifier/linear_model.py) for more details on the implementation of Perceptron Classifier.
 
 ### Running the Model
-> `(citation-env) [user@server citation-analysis]$ python -m testing.model_testing`
+```shell
+(citation-env) [user@server citation-analysis]$ python3 -m testing.model_testing
+```
   
-[Link](/testing/model_testing.py) to the source code. All the Hyperparameters can be modified to experiment with.
+[Link](/testing/model_testing.py) to the test source code. All the Hyperparameters can be modified to experiment with.
   
 ### Evaluation  
 we used ***f1_score*** metric for evaluation of our baseline classifier.
@@ -71,7 +114,7 @@ eval.metrics.f1_score(y_true, y_pred, labels, average)
 [Link](/eval/metrics.py) to the metrics source code.
 
 ### Results
-<img src="/plots/perceptron/confusion_matrix_plot.png?raw=true" width="600" height = "450" alt = "Confusion Matrix Plot" />
+<img src="/plots/perceptron/confusion_matrix_plot.png?raw=true" width="500" height = "375" alt = "Confusion Matrix Plot" />
 
 ### 2) Feedforward Neural Network (using PyTorch)
 A feed-forward neural network classifier with a single hidden layer containing 9 units. While a feed-forward neural network is clearly not the ideal architecture for sequential text data, it was of interest to add a sort of second baseline and examine the added gains (if any) relative to a single perceptron. The input to the feedforward network remained the same; only the final model was suitable for more complex inputs such as word embeddings.
@@ -81,7 +124,7 @@ Check this feed-forward model source [code](/classifier/linear_model.py) for mor
 ### 3) BiLSTM + Attention with ELMo (AllenNLP Model)
 The Bi-directional Long Short Term Memory (BiLSTM) model built using the [AllenNLP](https://allennlp.org/) library. For word representations, we used 100-dimensional [GloVe](https://nlp.stanford.edu/projects/glove/) vectors trained on a corpus of 6B tokens from Wikipedia. For contextual representations, we used [ELMo](https://allennlp.org/elmo) Embeddings which have been trained on a dataset of 5.5B tokens. This model uses the entire input text, as opposed to selected features in the text, as in the first two models. It has a single-layer BiLSTM with a hidden dimension size of 50 for each direction. 
 
-We used AllenNLP's [Config Files](https://guide.allennlp.org/using-config-files) to build our model, just need to implement a model and a dataset reader (with a Config file).
+We used AllenNLP's [Config Files](https://guide.allennlp.org/using-config-files) to build our model, just need to implement a model and a dataset reader (with a JSON Config file).
 
 Our BiLSTM AllenNLP model contains 4 major components:
 
@@ -94,24 +137,52 @@ Our BiLSTM AllenNLP model contains 4 major components:
 	 - The `forward()` method finally returns an output dictionary with the predicted label, loss, softmax probabilities and so on...
  3. Config File - [basic_model.json](configs/basic_model.json?raw=true)
 	 - The AllenNLP Configuration file takes the constructor parameters for various objects (Model, DatasetReader, Predictor, ...)
-	 - We can also define a number of Hyperparameters from the Config file.
+	 - We can provide a number of Hyperparameters in this Config file.
 		 - Depth and Width of the Network
 		 - Number of Epochs
 		 - Optimizer & Learning Rate
 		 - Batch Size
 		 - Dropout
 		 - Embeddings
+	- All the classes that config file uses must register using decorators (Ex: `@Model.register('bilstm_classifier'`).
  4. Predictor - [IntentClassificationPredictor](/testing/intent_predictor.py)
-	 - AllenNLP uses `Predictor`, a wrapper around trained model, for making predictions.
+	 - AllenNLP uses `Predictor`, a wrapper around the trained model, for making predictions.
 	 - The Predictor uses a pre-trained/saved model and dataset reader to predict new Instances
 
 ### Running the Model
-TODO
+AllenNLP provides `train`, `evaluate` and `predict` commands to interact with the models from command line.
+
+#### Training
+```shell
+$ allennlp train \
+    configs/basic_model.json \
+    -s $SAVED_MODELS_PATH/experiment_10 \
+    --include-package classifier
+```
+We ran a few experiments on this model, the configurations, results and archived models are available in `SAVED_MODELS_PATH` directory
 
 ### Evaluation
-TODO
+To evaluate the model, simply run:
+```shell
+$ allennlp evaluate \
+    $SAVED_MODELS_PATH/experiment_4/model.tar.gz \
+    data/jsonl/test.jsonl \
+    --cuda-device 3 \
+    --include-package classifier
+```
+
+### Predictions
+To make predictions, simply run:
+```shell
+$ allennlp predict \
+    $SAVED_MODELS_PATH/experiment_4/model.tar.gz \
+    data/jsonl/test.jsonl \
+    --cuda-device 3 \
+    --include-package classifier
+    --predictor citation_intent_predictor
+```
 
 ### Results
-<img src="/plots/bilstm_model/confusion_matrix_plot.png?raw=true" width="600" height = "450" alt = "Confusion Matrix Plot" />
+<img src="/plots/bilstm_model/confusion_matrix_plot.png?raw=true" width="500" height = "375" alt = "Confusion Matrix Plot" />
 
 ## References
