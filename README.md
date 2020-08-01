@@ -44,15 +44,16 @@ After activating the Virtual Environment, the console should look like this:
 ```shell
 git clone https://github.com/yelircaasi/citation-analysis.git
 ```
-Now change the current working directory to the project root folder (`> cd citation-analysis`)
+Now change the current working directory to the project root folder (`> cd citation-analysis`). <br />
 **Note:** Stay in the Project root folder while running all the experiments.
 
 #### Installing Pacakages
-Now we can install all the packages required to run this project, available in [requirements.txt](/requiements.txt) file.
+Now we can install all the packages required to run this project, available in [requirements.txt](/requirements.txt) file.
 ```shell
 (citation-env) [user@server citation-analysis]$ pip install -r requirements.txt
 ```
 #### Environment Variable for Saved Models Path
+Run the below line in the console, we'll use this variable later on.
 ```shell
 export SAVED_MODELS_PATH=/mount/arbeitsdaten/studenten1/team-lab-nlp/mandavsi_rileyic/saved_models
 ```
@@ -144,7 +145,7 @@ Our BiLSTM AllenNLP model contains 4 major components:
 		 - Batch Size
 		 - Dropout
 		 - Embeddings
-	- All the classes that config file uses must register using decorators (Ex: `@Model.register('bilstm_classifier'`).
+	- All the classes that the Config file uses must register using Python decorators (Ex: `@Model.register('bilstm_classifier'`).
  4. Predictor - [IntentClassificationPredictor](/testing/intent_predictor.py)
 	 - AllenNLP uses `Predictor`, a wrapper around the trained model, for making predictions.
 	 - The Predictor uses a pre-trained/saved model and dataset reader to predict new Instances
@@ -159,7 +160,8 @@ $ allennlp train \
     -s $SAVED_MODELS_PATH/experiment_10 \
     --include-package classifier
 ```
-We ran a few experiments on this model, the configurations, results and archived models are available in `SAVED_MODELS_PATH` directory
+We ran a few experiments on this model, the run configurations, results and archived models are available in the `SAVED_MODELS_PATH` directory. <br />
+**Note:** If the GPU cores are not available, set the `"cuda_device":` to `-1` in the [config file](/configs/basic_model.json?raw=true), or the available GPU Core.
 
 ### Evaluation
 To evaluate the model, simply run:
