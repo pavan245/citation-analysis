@@ -1,6 +1,4 @@
-import classifier
-
-import testing.intent_predictor as pred
+import classifier.intent_predictor as pred
 
 import eval.metrics as metrics
 

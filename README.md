@@ -148,7 +148,7 @@ Our BiLSTM AllenNLP model contains 4 major components:
 		 - Dropout
 		 - Embeddings
 	- All the classes that the Config file uses must register using Python decorators (for example, `@Model.register('bilstm_classifier'`).
- 4. Predictor - [IntentClassificationPredictor](/testing/intent_predictor.py)
+ 4. Predictor - [IntentClassificationPredictor](/classifier/intent_predictor.py)
 	 - AllenNLP uses `Predictor`, a wrapper around the trained model, for making predictions.
 	 - The Predictor uses a pre-trained/saved model and dataset reader to predict new Instances
 
