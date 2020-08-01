@@ -79,7 +79,7 @@ class FeedForward(torch.nn.Module):
                 self.optimizer.zero_grad()
 
                 # forward pass
-                y_pred = self.forward(X_train[a:b])
+                y_pred = self.forward(self.X_train[a:b])
                 loss = self.criterion(y_pred, self.y_train[a:b])
 
                 # backward pass
