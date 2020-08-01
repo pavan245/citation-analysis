@@ -182,7 +182,7 @@ $ allennlp predict \
     $SAVED_MODELS_PATH/experiment_4/model.tar.gz \
     data/jsonl/test.jsonl \
     --cuda-device 3 \
-    --include-package classifier
+    --include-package classifier \
     --predictor citation_intent_predictor
 ```
 
