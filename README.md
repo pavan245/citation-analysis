@@ -103,10 +103,11 @@ we used ***f1_score*** metric for evaluation of our baseline classifier.
 > F1 score is a weighted average of Precision and Recall(or Harmonic Mean between Precision and Recall). 
 > The formula for F1 Score is:  
 > F1 = 2 * (precision * recall) / (precision + recall)  
-  
+
 ```python  
 eval.metrics.f1_score(y_true, y_pred, labels, average)  
 ```  
+
 **Parameters**:
 **y_true** : 1-d array or list of gold class values    
 **y_pred** : 1-d array or list of estimated values returned by a classifier    
@@ -116,12 +117,20 @@ eval.metrics.f1_score(y_true, y_pred, labels, average)
 [Link](/eval/metrics.py) to the metrics source code.
 
 ### Results
-<img src="/plots/perceptron/confusion_matrix_plot.png?raw=true" width="500" height = "375" alt = "Confusion Matrix Plot" />
+<img src="/plots/perceptron/confusion_matrix_plot.png?raw=true" width="600" height = "450" alt = "Confusion Matrix Plot" />
 
 ### 2) Feedforward Neural Network (using PyTorch)
 A feed-forward neural network classifier with a single hidden layer containing 9 units. While a feed-forward neural network is clearly not the ideal architecture for sequential text data, it was of interest to add a sort of second baseline and examine the added gains (if any) relative to a single perceptron. The input to the feedforward network remained the same; only the final model was suitable for more complex inputs such as word embeddings.
 
 Check this feed-forward model source [code](/classifier/linear_model.py) for more details.
+
+### Running the Model  
+```shell  
+(citation-env) [user@server citation-analysis]$ python3 -m testing.ff_model_testing  
+```  
+
+### Results  
+<img src="/plots/ffnn_model/confusion_matrix_plot.png?raw=true" width="600" height = "450" alt = "Confusion Matrix Plot" />  
 
 ### 3) BiLSTM + Attention with ELMo (AllenNLP Model)
 The Bi-directional Long Short Term Memory (BiLSTM) model built using the [AllenNLP](https://allennlp.org/) library. For word representations, we used 100-dimensional [GloVe](https://nlp.stanford.edu/projects/glove/) vectors trained on a corpus of 6B tokens from Wikipedia. For contextual representations, we used [ELMo](https://allennlp.org/elmo) Embeddings which have been trained on a dataset of 5.5B tokens. This model uses the entire input text, as opposed to selected features in the text, as in the first two models. It has a single-layer BiLSTM with a hidden dimension size of 50 for each direction. 
@@ -193,7 +202,7 @@ We also have an another way to make predictions without using `allennlp predict`
 Modify [this](/testing/bilstm_predict.py) source to run predictions on different experiments. It also saves the Confusion Matrix Plot (as shown below) after prediction.
 
 ### Results
-<img src="/plots/bilstm_model/confusion_matrix_plot.png?raw=true" width="500" height = "375" alt = "Confusion Matrix Plot" />
+<img src="/plots/bilstm_model/confusion_matrix_plot.png?raw=true" width="600" height = "450" alt = "Confusion Matrix Plot" />
 
 ## References
 [\[1\]](https://github.com/allenai/scicite) SciCite GitHub Repository<br />
