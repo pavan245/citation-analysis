@@ -10,7 +10,7 @@ We implemented 3 classifiers and evaluated on test dataset:
  - Feedforward Neural Network Classifier (using [PyTorch](https://pytorch.org/))
  - BiLSTM + Attention with ELMo Embeddings (using [AllenNLP](https://allennlp.org/) library)
 
-This README documentation focuses on running the code base, training the models and predictions. For more information about our project work, model results and detailed error analysis, check [this](https://www.overleaf.com/project/5f1b0e8a6d0fb80001ceb5eb) report. Slides from the mid-term presentation are available [here](/presentation.pdf).<br/>
+This README documentation focuses on running the code base, training the models and predictions. For more information about our project work, model results and detailed error analysis, check [this](/final_project_report.pdf?raw=true) report. Slides from our mid-term presentation are available [here](/presentation.pdf?raw=true).<br/>
 For more information on the Citation Intent Classification in Scientific Publications, follow this [link](https://arxiv.org/pdf/1904.01608.pdf) to the original published paper and their [GitHub repo](https://github.com/allenai/scicite)
 
 ## Environment & Setup
