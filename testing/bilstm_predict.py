@@ -1,4 +1,5 @@
 import classifier
+
 import testing.intent_predictor as pred
 
 import eval.metrics as metrics
@@ -8,9 +9,8 @@ y_pred, y_true = pred.load_model_and_predict_test_data(saved_model_dir)
 
 confusion_matrix = metrics.get_confusion_matrix(y_true, y_pred)
 
+print("Confusion Matrix :: ")
 print(confusion_matrix)
 
 plot_file_path = saved_model_dir+'/confusion_matrix_plot.png'
 metrics.plot_confusion_matrix(confusion_matrix, "BiLSTM Classifier + Attention with ELMo", plot_file_path)
-
-print('Confusion Matrix Plot saved to :: ', plot_file_path)

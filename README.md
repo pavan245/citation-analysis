@@ -14,7 +14,7 @@ This README documentation focuses on running the code base, training the models 
 For more information on the Citation Intent Classification in Scientific Publications, follow this [link](https://arxiv.org/pdf/1904.01608.pdf) to the original published paper and their [GitHub repo](https://github.com/allenai/scicite)
 
 ## Environment & Setup
-It's recommended to use **Python 3.5 or greater**. Now we can install and create a Virtual Environment to run this project.
+This project needs **Python 3.5 or greater**. We need to install and create a Virtual Environment to run this project.
 
 #### Installing virtualenv
 ```shell
@@ -59,7 +59,8 @@ export SAVED_MODELS_PATH=/mount/arbeitsdaten/studenten1/team-lab-nlp/mandavsi_ri
 ```
 
 ## Data
-We have 3 different intents/classes in the dataset:
+This project uses a large dataset of citation intents provided by this `SciCite` [GitHub repo](https://github.com/allenai/scicite). Can be downloaded from this [link](https://s3-us-west-2.amazonaws.com/ai2-s2-research/scicite/scicite.tar.gz). <br />
+We have 3 different intents/classes in this dataset:
 
  - background (background information)
  - method (use of methods)
@@ -135,6 +136,7 @@ Our BiLSTM AllenNLP model contains 4 major components:
  2. Model - [BiLstmClassifier](/calssifier/nn.py)
 	 - The model's `forward()` method is called for every data instance by passing `tokens` and `label`
 	 - The signature of `forward()` needs to match with field names of the `Instance` created by the DatasetReader
+	 - This Model uses [ELMo](https://allennlp.org/elmo) deep contextualised embeddings.
 	 - The `forward()` method finally returns an output dictionary with the predicted label, loss, softmax probabilities and so on...
  3. Config File - [basic_model.json](configs/basic_model.json?raw=true)
 	 - The AllenNLP Configuration file takes the constructor parameters for various objects (Model, DatasetReader, Predictor, ...)
@@ -145,7 +147,7 @@ Our BiLSTM AllenNLP model contains 4 major components:
 		 - Batch Size
 		 - Dropout
 		 - Embeddings
-	- All the classes that the Config file uses must register using Python decorators (Ex: `@Model.register('bilstm_classifier'`).
+	- All the classes that the Config file uses must register using Python decorators (for example, `@Model.register('bilstm_classifier'`).
  4. Predictor - [IntentClassificationPredictor](/testing/intent_predictor.py)
 	 - AllenNLP uses `Predictor`, a wrapper around the trained model, for making predictions.
 	 - The Predictor uses a pre-trained/saved model and dataset reader to predict new Instances
@@ -161,7 +163,7 @@ $ allennlp train \
     --include-package classifier
 ```
 We ran a few experiments on this model, the run configurations, results and archived models are available in the `SAVED_MODELS_PATH` directory. <br />
-**Note:** If the GPU cores are not available, set the `"cuda_device":` to `-1` in the [config file](/configs/basic_model.json?raw=true), or the available GPU Core.
+**Note:** If the GPU cores are not available, set the `"cuda_device":` to `-1` in the [config file](/configs/basic_model.json?raw=true), otherwise the available GPU Core.
 
 ### Evaluation
 To evaluate the model, simply run:
@@ -184,7 +186,24 @@ $ allennlp predict \
     --predictor citation_intent_predictor
 ```
 
+We also have an another way to make predictions without using `allennlp predict` command. This returns prediction list, softmax probabilities and more details useful for error analysis. Simply run the following command: 
+```shell
+(citation-env) [user@server citation-analysis]$ python3 -m testing.bilstm_predict
+```
+Modify [this](/testing/bilstm_predict.py) source to run predictions on different experiments. It also saves the Confusion Matrix Plot (as shown below) after prediction.
+
 ### Results
 <img src="/plots/bilstm_model/confusion_matrix_plot.png?raw=true" width="500" height = "375" alt = "Confusion Matrix Plot" />
 
 ## References
+[\[1\]](https://github.com/allenai/scicite) SciCite GitHub Repository<br />
+This repository contains datasets and code for classifying citation intents, our poroject is based on this repository. <br /><br />
+[\[2\]](https://s3-us-west-2.amazonaws.com/ai2-s2-research/scicite/scicite.tar.gz) SciCite Dataset <br />
+Large Datset of Citation Intents <br /> <br />
+[\[3\]](https://allennlp.org/tutorials) AllenNLP Library.<br />
+An open-source NLP research library, built on PyTorch. <br /><br />
+[\[4\]](https://allennlp.org/elmo) ELMo Embeddings<br />
+Deep Contextualized word representations. <br /><br />
+[\[5\]](https://guide.allennlp.org/) AllenNLP Guide<br />
+A Guide to Natural Language Processing With AllenNLP. <br /><br />
+
