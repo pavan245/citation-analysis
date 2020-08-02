@@ -15,6 +15,24 @@ from torch.nn import Parameter
 @Model.register("basic_bilstm_classifier")
 class BiLstmClassifier(Model):
 
+    """
+    Two things to note first:
+        - This BiLstmClassifier is a subclass of AllenNLP's Model class
+        - This class registers the type "basic_bilstm_classifier"  using @Model.register() decorator,
+            this is required for the Config file to identify the Model class.
+
+    AllenNLP Model is similar to PyTorch Module, it implements forward() method and returns an output dictionary
+    with loss, logits and more....
+
+    The constructor parameters should match with configuration in the config file, the Vocabulary is composed by
+    the library or train pipeline after reading data using Dataset Reader.
+
+     In this model, we used Elmo embeddings, 1 layer BiLSTM (encoder) and 2 Feed-forward layers.
+     The train command/pipeline calls the forward method for a batch of Instances,
+     and the forward method returns the output dictionary with loss, logits, label and F1 metrics
+
+    """
+
     def __init__(self, vocab: Vocabulary,
                  text_field_embedder: TextFieldEmbedder,
                  encoder: Seq2SeqEncoder,
@@ -32,6 +50,7 @@ class BiLstmClassifier(Model):
 
         self.label_f1_metrics = {}
 
+        # create F1 Measures for each class
         for i in range(self.num_classes):
             self.label_f1_metrics[vocab.get_token_from_index(index=i, namespace="labels")] = \
                 F1Measure(positive_label=i)
@@ -44,7 +63,17 @@ class BiLstmClassifier(Model):
     def forward(self, tokens: Dict[str, torch.LongTensor],
                 label: torch.LongTensor) -> Dict[str, torch.LongTensor]:
 
+        """
+        The training loop takes a batch of Instances and passes it to the forward method
+
+        :param tokens: tokens from the Instance
+        :param label: label from the data Instance
+
+        :return: returns an output dictionary after forwarding inputs to the model
+        """
+
         input_elmo = None
+        # pop the "elmo" key and add it later
         elmo_tokens = tokens.pop("elmo", None)
 
         embedded_text = self.text_field_embedder(tokens)
@@ -56,6 +85,7 @@ class BiLstmClassifier(Model):
             # Create ELMo embeddings if applicable
             if self.elmo:
                 if elmo_tokens is not None:
+                    # get elmo representations from Tokens
                     elmo_representations = self.elmo(elmo_tokens["elmo_tokens"])["elmo_representations"]
                     if self.use_elmo:
                         input_elmo = elmo_representations.pop()
@@ -69,6 +99,7 @@ class BiLstmClassifier(Model):
                 else:
                     embedded_text = input_elmo
 
+        # pass the embedded text to the LSTM encoder
         encoded_text = self.encoder(embedded_text, text_mask)
 
         # Attention
@@ -77,10 +108,13 @@ class BiLstmClassifier(Model):
         output_dict = {}
         if label is not None:
             logits = self.classifier_feed_forward(encoded_text)
+
+            # Probabilities from Softmax
             class_probabilities = torch.nn.functional.softmax(logits, dim=1)
 
             output_dict["logits"] = logits
 
+            # loss calculation
             loss = self.loss(logits, label)
             output_dict["loss"] = loss
 
@@ -96,19 +130,44 @@ class BiLstmClassifier(Model):
 
     @overrides
     def make_output_human_readable(self, output_dict: Dict[str, torch.Tensor]) -> Dict[str, torch.Tensor]:
+        """
+
+        The predict command/pipeline calls this method with the output dictionary from forward() method.
+
+        The returned output dictionary will also be printed in the console when the predict command is executed
+
+        :param output_dict: output dictionary
+        :return: returns human readable output dictionary
+        """
         class_probabilities = torch.nn.functional.softmax(output_dict['logits'], dim=-1)
         predictions = class_probabilities.cpu().data.numpy()
         argmax_indices = np.argmax(predictions, axis=-1)
+
+        # get the label from vocabulary
         label = [self.vocab.get_token_from_index(x, namespace="labels")
                  for x in argmax_indices]
         output_dict['probabilities'] = class_probabilities
         output_dict['positive_label'] = label
         output_dict['prediction'] = label
 
+        # return ouput dictionary
         return output_dict
 
     @overrides
     def get_metrics(self, reset: bool = False) -> Dict[str, float]:
+
+        """
+
+        This method gets a call from the train pipeline,
+        and the returned metrics dictionary will be printed in the Console while Training.
+
+        The returned metrics dictionary contains class-wise F1 Scores, Average F1 score and loss
+
+        :param reset: boolean
+
+        :return: returns a metrics dictionary with Class Level F1 scores and losses
+        """
+
         metric_dict = {}
 
         sum_f1 = 0.0
