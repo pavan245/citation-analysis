@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.append(os.getcwd())
 from classifier.nn_ff import FeedForward
 
 
