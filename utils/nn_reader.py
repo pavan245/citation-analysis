@@ -9,6 +9,7 @@ def read_csv_nn(scicite_dir=None):
 	train_file_path = 'data/tsv/train.tsv'
 	test_file_path = 'data/tsv/test.tsv'
 	train_raw = read_csv_file(train_file_path, '\t')
+	test_raw = read_csv_file(test_file_path, '\t')
 
 	features = [x.features for x in train_raw]
 	features_unique = list(set(chain.from_iterable(features)))
@@ -44,7 +45,13 @@ def read_csv_nn(scicite_dir=None):
 			if f in features[i]:
 				X_test[i,j] = 1
 
-	return X_train, y_train, X_test
+	y_test_raw = np.array([x.true_label for x in test_raw])
+	y_test = np.zeros((nobs, y_dim))
+
+	for j in range(y_dim):
+		y_test[:, j] = y_test_raw == y_unique[j]
+
+	return X_train, y_train, X_test, y_test
 
 
 

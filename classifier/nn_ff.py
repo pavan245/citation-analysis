@@ -36,7 +36,7 @@ class FeedForward(torch.nn.Module):
 
     def read_data(self):
         """" Reads in training and test data and converts it to proper format. """
-        self.X_train_, self.y_train_, self.X_test = read_csv_nn()
+        self.X_train_, self.y_train_, self.X_test, self.y_test_ = read_csv_nn()
         self.X_test = torch.FloatTensor(self.X_test)
         yclass = np.array([(x[1] == 1) + 2 * (x[2] == 1) for x in self.y_train_])
         is0 = yclass == 0
@@ -51,14 +51,13 @@ class FeedForward(torch.nn.Module):
         self.l0 = sum(is0)
         self.l1 = sum(is1)
         self.l2 = sum(is2)
+        self.y_test = (self.y_test_[:, 1] == 1) + 2 * (self.y_test_[:, 2] == 1)
 
-    def fit(self, epochs=100, batch_size=16, lr=0.01, samples0=1000, samples1=1000, samples2=1000):
+    def fit(self, epochs=100, batch_size=16, lr=0.01, samples=(1000, 1000, 1000)):
         """ Trains model, using cross entropy loss and SGD optimizer. """
         self.criterion = torch.nn.CrossEntropyLoss()
         self.optimizer = torch.optim.SGD(self.parameters(), lr)
-        self.samples0 = samples0
-        self.samples1 = samples1
-        self.samples2 = samples2
+        self.samples0, self.samples1, self.samples2 = samples
 
         self.eval()  # put into eval mode
 
