@@ -119,18 +119,34 @@ eval.metrics.f1_score(y_true, y_pred, labels, average)
 ### Results
 <img src="/plots/perceptron/confusion_matrix_plot.png?raw=true" width="600" height = "450" alt = "Confusion Matrix Plot" />
 
-### 2) Feedforward Neural Network (using PyTorch)
-A feed-forward neural network classifier with a single hidden layer containing 9 units. While a feed-forward neural network is clearly not the ideal architecture for sequential text data, it was of interest to add a sort of second baseline and examine the added gains (if any) relative to a single perceptron. The input to the feedforward network remained the same; only the final model was suitable for more complex inputs such as word embeddings.
+### 2) Feed-forward Neural Network Classifier (Baseline Classifier)
+A feed-forward neural network classifier with a single hidden layer containing 9 units. While  clearly not the ideal architecture for sequential text data, the feed-forward neural network provides a second baseline. The input to the feedforward network remained the same as the perceptron; only the third model is suitable for more complex inputs such as word embeddings.
+```python
+class FeedForward(torch.nn.Module):
+  def __init__(self, input_size: int, hidden_size: int, output_size: int):
+  def forward(self, x: torch.nn.FloatTensor):
+  def read_data(self):
+  def fit(self, epochs: int = 100, batch_size: int = 16, lr: int = 0.01, 
+          samples: tuple = (1000, 1000, 1000)):
+  def predict(self):
+  def shuffle(self):
 
-Check this feed-forward model source [code](/classifier/linear_model.py) for more details.
+```
 
-### Running the Model  
-```shell  
-(citation-env) [user@server citation-analysis]$ python3 -m testing.ff_model_testing  
-```  
+Check the source [code](/classifier/nn_ff.py) for more details on the implementation of the feed-forward neural network.
 
-### Results  
-<img src="/plots/ffnn_model/confusion_matrix_plot.png?raw=true" width="600" height = "450" alt = "Confusion Matrix Plot" />  
+### Running the Model
+```shell
+(citation-env) [user@server citation-analysis]$ python3 -m testing.ff_model_testing
+```
+  
+[Link](/testing/ff_model_testing.py) to the test source code. All the Hyperparameters can be modified to experiment with.
+  
+### Evaluation  
+As in theperceptron, we used ***f1_score*** metric for evaluation of our baseline classifier.
+
+### Results
+<img src="/plots/perceptron/confusion_matrix_plot_ff.png?raw=true" width="600" height = "450" alt = "Confusion Matrix Plot" />
 
 ### 3) BiLSTM + Attention with ELMo (AllenNLP Model)
 The Bi-directional Long Short Term Memory (BiLSTM) model built using the [AllenNLP](https://allennlp.org/) library. For word representations, we used 100-dimensional [GloVe](https://nlp.stanford.edu/projects/glove/) vectors trained on a corpus of 6B tokens from Wikipedia. For contextual representations, we used [ELMo](https://allennlp.org/elmo) Embeddings which have been trained on a dataset of 5.5B tokens. This model uses the entire input text, as opposed to selected features in the text, as in the first two models. It has a single-layer BiLSTM with a hidden dimension size of 50 for each direction. 
