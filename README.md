@@ -143,10 +143,10 @@ Check the source [code](/classifier/nn_ff.py) for more details on the implementa
 [Link](/testing/ff_model_testing.py) to the test source code. All the Hyperparameters can be modified to experiment with.
   
 ### Evaluation  
-As in theperceptron, we used ***f1_score*** metric for evaluation of our baseline classifier.
+As in the perceptron classifier, we used ***f1_score*** metric for evaluation of our baseline classifier.
 
 ### Results
-<img src="/plots/perceptron/confusion_matrix_plot_ff.png?raw=true" width="600" height = "450" alt = "Confusion Matrix Plot" />
+<img src="/plots/ffnn_model/confusion_matrix_plot_ff.png?raw=true" width="600" height = "450" alt = "Confusion Matrix Plot" />
 
 ### 3) BiLSTM + Attention with ELMo (AllenNLP Model)
 The Bi-directional Long Short Term Memory (BiLSTM) model built using the [AllenNLP](https://allennlp.org/) library. For word representations, we used 100-dimensional [GloVe](https://nlp.stanford.edu/projects/glove/) vectors trained on a corpus of 6B tokens from Wikipedia. For contextual representations, we used [ELMo](https://allennlp.org/elmo) Embeddings which have been trained on a dataset of 5.5B tokens. This model uses the entire input text, as opposed to selected features in the text, as in the first two models. It has a single-layer BiLSTM with a hidden dimension size of 50 for each direction. 
